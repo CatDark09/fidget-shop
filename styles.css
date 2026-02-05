@@ -207,6 +207,99 @@ header {
     font-size: 0.9rem;
 }
 
+
+/* Colors Section */
+.colors-section {
+    padding: 6rem 0;
+    background-color: #f9fafb;
+}
+
+.colors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    justify-items: center;
+}
+
+.filament-spool {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.filament-spool:hover {
+    transform: translateY(-5px);
+}
+
+/* Filament Visual Representation */
+.spool-visual {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 8px solid #333;
+    /* Spool sides */
+    background-color: #eee;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.filament-color {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    /* Gap between spool and filament */
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Highlight reflection for plastic look */
+.filament-color::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+/* Inner spool hole */
+.spool-visual::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+    background-color: #222;
+    /* Dark hole */
+    border-radius: 50%;
+    z-index: 2;
+    border: 2px solid #555;
+}
+
+.filament-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+}
+
+.filament-type {
+    font-size: 0.85rem;
+    color: #6b7280;
+    background-color: #e5e7eb;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
 /* Contact Section */
 .contact {
     padding: 5rem 0;

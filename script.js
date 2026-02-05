@@ -17,6 +17,47 @@ const filaments = [
     { name: 'Blue-Pink Dual', color: '#8b5cf6', type: 'silk', rainbow: 'linear-gradient(45deg, #3b82f6, #ec4899)' }
 ];
 
+// Render Colors in the new section
+const colorsGrid = document.getElementById('colorsGrid');
+if (colorsGrid) {
+    filaments.forEach(f => {
+        const spool = document.createElement('div');
+        spool.className = 'filament-spool';
+
+        const visual = document.createElement('div');
+        visual.className = 'spool-visual';
+
+        const color = document.createElement('div');
+        color.className = 'filament-color';
+        if (f.rainbow) {
+            color.style.background = f.rainbow;
+        } else {
+            color.style.backgroundColor = f.color;
+        }
+
+        visual.appendChild(color);
+
+        const name = document.createElement('span');
+        name.className = 'filament-name';
+        name.textContent = f.name;
+
+        const type = document.createElement('span');
+        type.className = 'filament-type';
+        // Translate type names
+        let typeName = f.type;
+        if (f.type === 'standard') typeName = 'Normál';
+        if (f.type === 'silk') typeName = 'Selyemfényű';
+        if (f.type === 'matte') typeName = 'Matt';
+        type.textContent = typeName;
+
+        spool.appendChild(visual);
+        spool.appendChild(name);
+        spool.appendChild(type);
+
+        colorsGrid.appendChild(spool);
+    });
+}
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -224,39 +265,6 @@ document.querySelectorAll('.product-card').forEach(card => {
                     btn3d.style.borderColor = '#ccc';
                 }
 
-                // Inject Colors
-                const colorContainer = document.getElementById('color-selection-container');
-                if (colorContainer) {
-                    colorContainer.innerHTML = '<h3>Színválasztás:</h3><div class="color-swatches"></div>';
-                    const swatchesWrapper = colorContainer.querySelector('.color-swatches');
-
-                    filaments.forEach(f => {
-                        const swatch = document.createElement('div');
-                        swatch.className = 'swatch-item';
-                        swatch.title = f.name;
-
-                        const circle = document.createElement('div');
-                        circle.className = 'swatch-circle';
-                        if (f.rainbow) {
-                            circle.style.background = f.rainbow;
-                        } else {
-                            circle.style.backgroundColor = f.color;
-                        }
-
-                        swatch.onclick = () => {
-                            document.querySelectorAll('.swatch-item').forEach(s => s.classList.remove('active'));
-                            swatch.classList.add('active');
-                            if (fidgetViewer) {
-                                fidgetViewer.setMaterial({ color: f.color, type: f.type });
-                            }
-                        };
-
-                        swatch.appendChild(circle);
-                        swatchesWrapper.appendChild(swatch);
-                    });
-                    colorContainer.style.display = 'none'; // Initially hidden (photo view)
-                }
-
                 // Show/Hide 3D Button based on model availability
                 if (product.modelFile && viewControls && btn3d && container3d) {
                     viewControls.style.display = 'flex';
@@ -275,9 +283,6 @@ document.querySelectorAll('.product-card').forEach(card => {
                         btnPhoto.style.background = 'white';
                         btnPhoto.style.color = 'black';
                         btnPhoto.style.borderColor = '#ccc';
-
-                        const colorSelection = document.getElementById('color-selection-container');
-                        if (colorSelection) colorSelection.style.display = 'block';
 
                         // Initialize Viewer
                         if (!fidgetViewer) {
