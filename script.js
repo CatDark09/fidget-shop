@@ -32,7 +32,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Contact form handler - Netlify Functions
-const contactForm = document.getElementById('contact-form');
+const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
 if (contactForm) {
