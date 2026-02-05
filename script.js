@@ -32,56 +32,65 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Contact form handler - Netlify Functions
-const contactForm = document.getElementById('contactForm');
-const formMessage = document.getElementById('formMessage');
+// Contact form handler
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
 
-if (contactForm) {
-    contactForm.addEventListener('submit', function (e) {
-        e.preventDefault();
+    console.log("Script loaded, looking for contactForm..."); // Debug
 
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
-        submitButton.textContent = 'Küldés...';
-        submitButton.disabled = true;
-        formMessage.style.display = 'none';
+    if (contactForm) {
+        console.log("Contact form found!"); // Debug
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            console.log("Form submission intercepted"); // Debug
 
-        const formData = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            message: document.getElementById('message').value
-        };
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'Küldés...';
+            submitButton.disabled = true;
+            formMessage.style.display = 'none';
 
-        fetch('/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            fetch('/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             })
-            .then(data => {
-                formMessage.className = 'form-message success';
-                formMessage.textContent = 'Köszönjük az üzeneted! Hamarosan válaszolok.';
-                formMessage.style.display = 'block';
-                contactForm.reset();
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
-            })
-            .catch((error) => {
-                console.error('Hiba:', error);
-                formMessage.className = 'form-message error';
-                formMessage.textContent = 'Hiba történt a küldéskor. Kérlek próbáld újra később.';
-                formMessage.style.display = 'block';
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
-            });
-    });
-}
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    formMessage.className = 'form-message success';
+                    formMessage.textContent = 'Köszönjük az üzeneted! Hamarosan válaszolok.';
+                    formMessage.style.display = 'block';
+                    contactForm.reset();
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                })
+                .catch((error) => {
+                    console.error('Hiba:', error);
+                    formMessage.className = 'form-message error';
+                    formMessage.textContent = 'Hiba történt a küldéskor. (' + error.message + ')';
+                    formMessage.style.display = 'block';
+                    submitButton.textContent = originalButtonText;
+                    submitButton.disabled = false;
+                });
+        });
+    } else {
+        console.error("Contact form NOT found in DOM"); // Debug
+    }
+});
 
 // Add animation on scroll
 const observerOptions = {
