@@ -1,0 +1,14 @@
+{
+  "name": "fidget-shop",
+  "version": "1.0.0",
+  "description": "3D Fidget Shop",
+  "dependencies": {
+    "nodemailer": "^7.0.13",
+    "resend": "^6.9.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260205.0",
+    "jsdom": "^28.0.0",
+    "three": "^0.182.0"
+  }
+}
