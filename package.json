@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "3D Fidget Shop",
   "dependencies": {
-    "nodemailer": "^7.0.13",
     "resend": "^6.9.1"
   },
   "devDependencies": {
