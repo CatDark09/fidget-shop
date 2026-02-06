@@ -52,7 +52,8 @@ if (colorsGrid) {
 
         spool.appendChild(visual);
         spool.appendChild(name);
-        spool.appendChild(type);
+        // Type removed as per request
+        // spool.appendChild(type);
 
         colorsGrid.appendChild(spool);
     });
@@ -290,6 +291,47 @@ document.querySelectorAll('.product-card').forEach(card => {
                         }
                         fidgetViewer.loadModel(product.modelFile);
                         fidgetViewer.onResize(); // Force resize check
+
+                        // Inject Color Selection for 3D Viewer (Standard Colors Only)
+                        const colorSelection = document.getElementById('color-selection-container');
+                        if (colorSelection) {
+                            colorSelection.innerHTML = '';
+                            colorSelection.style.display = 'flex';
+                            colorSelection.style.flexWrap = 'wrap';
+                            colorSelection.style.gap = '10px';
+                            colorSelection.style.justifyContent = 'center';
+                            colorSelection.style.marginTop = '15px';
+
+                            // Filter for standard colors only
+                            const standardColors = filaments.filter(f => f.type === 'standard');
+
+                            standardColors.forEach(f => {
+                                const swatch = document.createElement('div');
+                                swatch.style.width = '30px';
+                                swatch.style.height = '30px';
+                                swatch.style.borderRadius = '50%';
+                                swatch.style.border = '2px solid #ddd';
+                                swatch.style.cursor = 'pointer';
+                                swatch.style.backgroundColor = f.color;
+                                swatch.title = f.name;
+
+                                swatch.addEventListener('click', () => {
+                                    // Highlight selected
+                                    Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
+                                    swatch.style.borderColor = '#6366f1';
+
+                                    // Set color in viewer
+                                    if (fidgetViewer) {
+                                        fidgetViewer.setMaterial({
+                                            color: f.color,
+                                            type: f.type
+                                        });
+                                    }
+                                });
+
+                                colorSelection.appendChild(swatch);
+                            });
+                        }
                     };
 
                     // Setup Photo Button Click
@@ -307,6 +349,7 @@ document.querySelectorAll('.product-card').forEach(card => {
                         btn3d.style.color = 'black';
                         btn3d.style.borderColor = '#ccc';
 
+                        // Hide color selection in photo mode
                         const colorSelection = document.getElementById('color-selection-container');
                         if (colorSelection) colorSelection.style.display = 'none';
                     };
