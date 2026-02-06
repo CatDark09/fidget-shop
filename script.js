@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
                 .then(data => {
                     formMessage.className = 'form-message success';
-                    formMessage.textContent = 'Köszönjük az üzeneted! Hamarosan válaszolok.';
+                    formMessage.textContent = 'Köszönjük az üzeneted! Hamarosan válaszolunk.';
                     formMessage.style.display = 'block';
                     contactForm.reset();
                     submitButton.textContent = originalButtonText;
