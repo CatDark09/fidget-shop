@@ -331,6 +331,16 @@ document.querySelectorAll('.product-card').forEach(card => {
 
                                 colorSelection.appendChild(swatch);
                             });
+
+                            // Add disclaimer text
+                            const disclaimer = document.createElement('p');
+                            disclaimer.textContent = '(A színek a valóságban eltérhetnek)';
+                            disclaimer.style.width = '100%';
+                            disclaimer.style.textAlign = 'center';
+                            disclaimer.style.marginTop = '10px';
+                            disclaimer.style.fontSize = '0.9em';
+                            disclaimer.style.color = '#666';
+                            colorSelection.appendChild(disclaimer);
                         }
                     };
 
