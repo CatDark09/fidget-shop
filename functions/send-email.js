@@ -39,7 +39,7 @@ export async function onRequestPost(context) {
         await sendEmail(
             email,
             'Visszaigazolás: Megkaptuk az üzeneted! - Fidget Piac',
-            `Szia ${name}!\n\nKöszönöm, hogy írtál nekünk! Megkaptam a rendelési szándékodat / üzenetedet.\nHamarosan feldolgozom, és felveszem veled a kapcsolatot a további részletekkel (szállítás, fizetés).\n\nAz általad küldött üzenet:\n"${message}"\n\nÜdvözlettel,\nA Fidget Piac Csapata`,
+            `Kedves ${name}!\n\nKöszönjük a leveled!\n\nMegkaptuk a rendelési szándékodat / üzenetedet.\n\nHamarosan feldolgozzuk és felvesszük Veled a kapcsolatot a szállítás és a fizetés részleteinek egyeztetése miatt.\n\nAz általad küldött üzenet:\n"${message}"\n\nÜdvözlettel:\n\na Fidget Piac csapata`,
             'info@fidget-piac.com'
         );
 

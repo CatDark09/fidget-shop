@@ -178,9 +178,14 @@ const productData = {
         modelFile: 'Blanket_mini.stl'
     },
     'hexagon-twist': {
-        title: 'Hexagon',
+        title: 'Nagy Hexagon',
         images: ['hexagon1.jpg', 'hexagon2.jpg'],
         modelFile: 'Hexagon.stl'
+    },
+    'hexagon-mini': {
+        title: 'Kicsi Hexagon',
+        images: [],
+        modelFile: 'Small Hexagon.stl'
     },
     'gyro-ring-pack': {
         title: 'Gyro Gyűrűk (5 db-os csomag)',
@@ -192,15 +197,23 @@ const productData = {
         images: ['gyro1_(1pack).jpg', 'gyro2_(1pack).jpg'],
         modelFile: 'Gyro 1 pack.stl'
     },
+    'half-gyro': {
+        title: 'Half Gyro',
+        images: [],
+        modelFile: 'Half Gyro.stl'
+    },
     'gear-spinner': {
-        title: 'Fogaskerék Spinner',
+        title: 'Pörgettyű Kerekekkel',
         images: ['gear_spinner1.jpg', 'gear_spinner2.jpg'],
         modelFile: 'planetary-gears.stl'
     },
     'spinner-ring': {
-        title: 'Spinner Gyűrű',
+        title: 'Sima Pörgettyű',
         images: ['rign_spinner1.jpg', 'rign_spinner2.jpg']
-        // No STL
+    },
+    'planetary-gear': {
+        title: '2 Ujjas Pörgettyű',
+        images: ['dual_ring_spinner1.jpg', 'dual_ring_spinner2.jpg']
     },
     'cube-angled': {
         title: 'Végtelen Kocka',
@@ -217,9 +230,30 @@ const productData = {
         images: ['liquid_cube1.jpg', 'liquid_cube2.jpg'],
         modelFile: 'liquid cube.stl'
     },
-    'planetary-gear': {
-        title: 'Dual Ring Spinner',
-        images: ['dual_ring_spinner1.jpg', 'dual_ring_spinner2.jpg']
+    'liquid-ball': {
+        title: 'Liquid Ball',
+        images: [],
+        modelFile: 'Liquid Ball.stl'
+    },
+    'hand-roller': {
+        title: 'Hand Roller',
+        images: [],
+        modelFile: ''
+    },
+    'litho-plane': {
+        title: 'Litofán Sík',
+        images: [],
+        modelFile: ''
+    },
+    'litho-arc': {
+        title: 'Litofán Ív',
+        images: [],
+        modelFile: ''
+    },
+    'litho-cylinder': {
+        title: 'Litofán Henger',
+        images: [],
+        modelFile: ''
     }
 };
 
@@ -295,52 +329,57 @@ document.querySelectorAll('.product-card').forEach(card => {
                         // Inject Color Selection for 3D Viewer (Standard Colors Only)
                         const colorSelection = document.getElementById('color-selection-container');
                         if (colorSelection) {
-                            colorSelection.innerHTML = '';
-                            colorSelection.style.display = 'flex';
-                            colorSelection.style.flexWrap = 'wrap';
-                            colorSelection.style.gap = '10px';
-                            colorSelection.style.justifyContent = 'center';
-                            colorSelection.style.marginTop = '15px';
+                            if (productId.startsWith('litho-')) {
+                                colorSelection.style.display = 'none';
+                                colorSelection.innerHTML = '';
+                            } else {
+                                colorSelection.innerHTML = '';
+                                colorSelection.style.display = 'flex';
+                                colorSelection.style.flexWrap = 'wrap';
+                                colorSelection.style.gap = '10px';
+                                colorSelection.style.justifyContent = 'center';
+                                colorSelection.style.marginTop = '15px';
 
-                            // Filter for standard colors only
-                            const standardColors = filaments.filter(f => f.type === 'standard');
+                                // Filter for standard colors only
+                                const standardColors = filaments.filter(f => f.type === 'standard');
 
-                            standardColors.forEach(f => {
-                                const swatch = document.createElement('div');
-                                swatch.style.width = '30px';
-                                swatch.style.height = '30px';
-                                swatch.style.borderRadius = '50%';
-                                swatch.style.border = '2px solid #ddd';
-                                swatch.style.cursor = 'pointer';
-                                swatch.style.backgroundColor = f.color;
-                                swatch.title = f.name;
+                                standardColors.forEach(f => {
+                                    const swatch = document.createElement('div');
+                                    swatch.style.width = '30px';
+                                    swatch.style.height = '30px';
+                                    swatch.style.borderRadius = '50%';
+                                    swatch.style.border = '2px solid #ddd';
+                                    swatch.style.cursor = 'pointer';
+                                    swatch.style.backgroundColor = f.color;
+                                    swatch.title = f.name;
 
-                                swatch.addEventListener('click', () => {
-                                    // Highlight selected
-                                    Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
-                                    swatch.style.borderColor = '#6366f1';
+                                    swatch.addEventListener('click', () => {
+                                        // Highlight selected
+                                        Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
+                                        swatch.style.borderColor = '#6366f1';
 
-                                    // Set color in viewer
-                                    if (fidgetViewer) {
-                                        fidgetViewer.setMaterial({
-                                            color: f.color,
-                                            type: f.type
-                                        });
-                                    }
+                                        // Set color in viewer
+                                        if (fidgetViewer) {
+                                            fidgetViewer.setMaterial({
+                                                color: f.color,
+                                                type: f.type
+                                            });
+                                        }
+                                    });
+
+                                    colorSelection.appendChild(swatch);
                                 });
 
-                                colorSelection.appendChild(swatch);
-                            });
-
-                            // Add disclaimer text
-                            const disclaimer = document.createElement('p');
-                            disclaimer.textContent = '(A színek a valóságban eltérhetnek)';
-                            disclaimer.style.width = '100%';
-                            disclaimer.style.textAlign = 'center';
-                            disclaimer.style.marginTop = '10px';
-                            disclaimer.style.fontSize = '0.9em';
-                            disclaimer.style.color = '#666';
-                            colorSelection.appendChild(disclaimer);
+                                // Add disclaimer text
+                                const disclaimer = document.createElement('p');
+                                disclaimer.textContent = '(A színek a valóságban eltérhetnek)';
+                                disclaimer.style.width = '100%';
+                                disclaimer.style.textAlign = 'center';
+                                disclaimer.style.marginTop = '10px';
+                                disclaimer.style.fontSize = '0.9em';
+                                disclaimer.style.color = '#666';
+                                colorSelection.appendChild(disclaimer);
+                            }
                         }
                     };
 
