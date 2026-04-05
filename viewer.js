@@ -64,60 +64,104 @@ class FidgetViewer {
         window.addEventListener('resize', () => this.onResize());
     }
 
-    loadModel(modelPath) {
+            loadModel(modelPath) {
         // Remove old model
         if (this.currentMesh) {
             this.scene.remove(this.currentMesh);
-            this.currentMesh.geometry.dispose();
-            this.currentMesh.material.dispose();
+            if (this.currentMesh.geometry) this.currentMesh.geometry.dispose();
+            if (this.currentMesh.material) this.currentMesh.material.dispose();
+            
+            // Handle groups (3MF)
+            if (this.currentMesh.isGroup) {
+                this.currentMesh.traverse((child) => {
+                    if (child.isMesh) {
+                        child.geometry.dispose();
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(m => m.dispose());
+                        } else if (child.material) {
+                            child.material.dispose();
+                        }
+                    }
+                });
+            }
             this.currentMesh = null;
         }
 
         // Add Loading Indicator
         this.showLoading();
 
-        const loader = new THREE.STLLoader();
-        loader.load(
-            `models/${modelPath}`,
-            (geometry) => {
-                this.hideLoading();
-                // Use Standard Material for PBR (Physically Based Rendering)
-                const material = new THREE.MeshStandardMaterial({
-                    color: this.defaultColor,
-                    roughness: 0.5,
-                    metalness: 0.1
+        const ext = modelPath.split('.').pop().toLowerCase();
+        
+        const onLoad = (object) => {
+            this.hideLoading();
+            
+            // Use Standard Material for PBR (Physically Based Rendering)
+            const defaultMaterial = new THREE.MeshStandardMaterial({
+                color: this.defaultColor,
+                roughness: 0.5,
+                metalness: 0.1
+            });
+
+            let mainObject;
+            if (ext === '3mf') {
+                // 3MF returns a Group
+                mainObject = object;
+                
+                // Override materials and center
+                mainObject.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material = defaultMaterial;
+                        // Some 3MF files have geometry offsets, we let the external box logic center it
+                    }
                 });
+                
+                // Rotate upright if needed, though 3MF usually specifies up-axis.
+                // We'll apply the typical rotation
+                mainObject.rotation.set(-Math.PI / 2, 0, 0);
 
-                const mesh = new THREE.Mesh(geometry, material);
-
+            } else {
+                // STL returns Geometry
+                mainObject = new THREE.Mesh(object, defaultMaterial);
+                
                 // Center the geometry
-                geometry.computeBoundingBox();
+                object.computeBoundingBox();
                 const center = new THREE.Vector3();
-                geometry.boundingBox.getCenter(center);
-                geometry.translate(-center.x, -center.y, -center.z);
+                object.boundingBox.getCenter(center);
+                object.translate(-center.x, -center.y, -center.z);
 
                 // Rotate it upright
-                mesh.rotation.x = -Math.PI / 2;
-
-                this.scene.add(mesh);
-                this.currentMesh = mesh;
-
-                // Adjust camera to fit
-                this.fitCameraToMesh(mesh);
-            },
-            (xhr) => {
-                // Progress handling
-                if (xhr.lengthComputable) {
-                    const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
-                    this.updateProgress(percentComplete);
-                }
-            },
-            (error) => {
-                this.hideLoading();
-                console.error('An error occurred loading the model', error);
-                this.container.innerHTML = '<p style="color:red; text-align:center;">Hiba a 3D modell betöltésekor</p>';
+                mainObject.rotation.x = -Math.PI / 2;
             }
-        );
+
+            this.scene.add(mainObject);
+            this.currentMesh = mainObject;
+
+            // Adjust camera to fit
+            this.fitCameraToMesh(mainObject);
+        };
+
+        const onProgress = (xhr) => {
+            if (xhr.lengthComputable) {
+                const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
+                this.updateProgress(percentComplete);
+            }
+        };
+
+        const onError = (error) => {
+            this.hideLoading();
+            console.error('An error occurred loading the model', error);
+            if (this.container) {
+                this.container.innerHTML = '<p style="color:red; text-align:center; padding-top: 20px;">Hiba a 3D modell betöltésekor</p>';
+            }
+        };
+
+        if (ext === '3mf') {
+            const loader = new THREE.3MFLoader();
+            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+        } else {
+            const loader = new THREE.STLLoader();
+            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+        }
     }
 
     showLoading() {
@@ -150,21 +194,33 @@ class FidgetViewer {
     }
 
     // Updated Method: Set Color and Material Properties (PBR)
-    setMaterial(options) {
+            setMaterial(options) {
         if (this.currentMesh) {
-            if (options.color) this.currentMesh.material.color.set(options.color);
+            const applyProps = (material) => {
+                if (options.color) material.color.set(options.color);
+                
+                // Handle Silk vs Matte properties with MeshStandardMaterial
+                if (options.type === 'silk') {
+                    material.roughness = 0.25; // Shiny/Silk effect
+                    material.metalness = 0.7; // Metallic look
+                } else if (options.type === 'matte') {
+                    material.roughness = 0.95; // Very dull
+                    material.metalness = 0.0; // Non-metallic
+                } else {
+                    // Standard Plastic
+                    material.roughness = 0.5;
+                    material.metalness = 0.1;
+                }
+            };
 
-            // Handle Silk vs Matte properties with MeshStandardMaterial
-            if (options.type === 'silk') {
-                this.currentMesh.material.roughness = 0.25; // Shiny/Silk effect
-                this.currentMesh.material.metalness = 0.7; // Metallic look
-            } else if (options.type === 'matte') {
-                this.currentMesh.material.roughness = 0.95; // Very dull
-                this.currentMesh.material.metalness = 0.0; // Non-metallic
-            } else {
-                // Standard Plastic
-                this.currentMesh.material.roughness = 0.5;
-                this.currentMesh.material.metalness = 0.1;
+            if (this.currentMesh.isGroup) {
+                this.currentMesh.traverse((child) => {
+                    if (child.isMesh && child.material) {
+                        applyProps(child.material);
+                    }
+                });
+            } else if (this.currentMesh.material) {
+                applyProps(this.currentMesh.material);
             }
         }
     }

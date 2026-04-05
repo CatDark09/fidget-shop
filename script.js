@@ -170,32 +170,38 @@ const productData = {
     'fidget-blanket': {
         title: 'Blanket (Normál verzió)',
         images: ['blanket1.jpg', 'blanket2.jpg'],
-        modelFile: 'Blanket.stl'
+        modelFile: 'Blanket.stl',
+        description: '<strong>Méret:</strong> 100x100 mm'
     },
     'fidget-blanket-mini': {
         title: 'Blanket (Mini verzió)',
         images: ['mini_blanket1.jpg', 'mini_blanket2.jpg'],
-        modelFile: 'Blanket_mini.stl'
+        modelFile: 'Blanket_mini.stl',
+        description: '<strong>Méret:</strong> 60x60 mm'
     },
     'hexagon-twist': {
         title: 'Nagy Hexagon',
         images: ['hexagon1.jpg', 'hexagon2.jpg'],
-        modelFile: 'Hexagon.stl'
+        modelFile: 'Hexagon.stl',
+        description: '<strong>Méret:</strong> 145 mm átmérő'
     },
     'hexagon-mini': {
         title: 'Kicsi Hexagon',
         images: [],
-        modelFile: 'Small Hexagon.stl'
+        modelFile: 'Small Hexagon.stl',
+        description: '<strong>Méret:</strong> 82 mm átmérő'
     },
     'gyro-ring-pack': {
         title: 'Gyro Gyűrűk (5 db-os csomag)',
         images: ['gyro1_(5pack).jpg', 'gyro2_(5pack).jpg'],
-        modelFile: 'Gyro 5 pack.stl'
+        modelFile: 'Gyro 5 pack.stl',
+        description: '<strong>Méretek a csomagban:</strong><br>• 44 mm átmérő<br>• 52 mm átmérő<br>• 58 mm átmérő<br>• 65 mm átmérő<br>• 72 mm átmérő'
     },
     'gyro-ring': {
         title: 'Gyro Gyűrű (1 db)',
         images: ['gyro1_(1pack).jpg', 'gyro2_(1pack).jpg'],
-        modelFile: 'Gyro 1 pack.stl'
+        modelFile: 'Gyro 1 pack.stl',
+        description: '<strong>Választható méretek:</strong><br>44 mm, 52 mm, 58 mm, 65 mm, vagy 72 mm átmérő'
     },
     'half-gyro': {
         title: 'Half Gyro',
@@ -205,15 +211,18 @@ const productData = {
     'gear-spinner': {
         title: 'Pörgettyű Kerekekkel',
         images: ['gear_spinner1.jpg', 'gear_spinner2.jpg'],
-        modelFile: 'planetary-gears.stl'
+        modelFile: 'planetary-gears.stl',
+        description: '<strong>Méret:</strong> 60 mm átmérő'
     },
     'spinner-ring': {
         title: 'Sima Pörgettyű',
-        images: ['rign_spinner1.jpg', 'rign_spinner2.jpg']
+        images: ['rign_spinner1.jpg', 'rign_spinner2.jpg'],
+        description: '<strong>Választható belső átmérők:</strong><br>15.7 mm, 16.5 mm, 17.3 mm, 18.1 mm, 19.0 mm, 19.8 mm, 20.6 mm, 21.4 mm, 22.2 mm, 23.0 mm, 23.8 mm'
     },
     'planetary-gear': {
         title: '2 Ujjas Pörgettyű',
-        images: ['dual_ring_spinner1.jpg', 'dual_ring_spinner2.jpg']
+        images: ['dual_ring_spinner1.jpg', 'dual_ring_spinner2.jpg'],
+        description: '<strong>Méret:</strong> 75x35 mm'
     },
     'cube-angled': {
         title: 'Végtelen Kocka',
@@ -223,17 +232,20 @@ const productData = {
     'slinky': {
         title: 'Slinky',
         images: ['slinky1.jpg', 'slinky2.jpg'],
-        modelFile: 'slinky.stl'
+        modelFile: 'slinky.stl',
+        description: '<strong>Méret:</strong> 105 mm magasság, 68 mm átmérő'
     },
     'sectioned-cube': {
         title: 'Liquid Cube',
         images: ['liquid_cube1.jpg', 'liquid_cube2.jpg'],
-        modelFile: 'liquid cube.stl'
+        modelFile: 'liquid cube.stl',
+        description: '<strong>Méret:</strong> 60x60x60 mm<br><br><span style="color: #666;"><i>(Egy kicsit hangosabb, mint a többi termék.)</i></span>'
     },
     'liquid-ball': {
         title: 'Liquid Ball',
         images: [],
-        modelFile: 'Liquid Ball.stl'
+        modelFile: 'Liquid Ball.stl',
+        description: '<span style="color: #666;"><i>(Egy kicsit hangosabb, mint a többi termék.)</i></span>'
     },
     'hand-roller': {
         title: 'Hand Roller',
@@ -266,6 +278,17 @@ document.querySelectorAll('.product-card').forEach(card => {
 
             if (product) {
                 modalTitle.textContent = product.title;
+
+                const modalDesc = document.getElementById('modal-description');
+                if (modalDesc) {
+                    if (product.description) {
+                        // Allow HTML in description like <br> for line breaks
+                        modalDesc.innerHTML = product.description;
+                        modalDesc.style.display = 'block';
+                    } else {
+                        modalDesc.style.display = 'none';
+                    }
+                }
 
                 const mainImageContainer = document.getElementById('modal-photo-container');
                 const thumbnailsContainer = document.querySelector('.modal-thumbnails');
