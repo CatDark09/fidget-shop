@@ -429,6 +429,7 @@ document.querySelectorAll('.product-card').forEach(card => {
 
                         // Initialize Viewer
                         if (!fidgetViewer) {
+                            const ViewerClass = window.FidgetViewer || FidgetViewer;
                             fidgetViewer = new ViewerClass('modal-3d-container');
                         }
                         fidgetViewer.loadModel(product.modelFile);
