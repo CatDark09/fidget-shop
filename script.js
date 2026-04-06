@@ -4,7 +4,7 @@
 let cardViewers = [];
 
 function initLithoCardViewers() {
-    if (!window.THREE || !window.FidgetViewer) return;
+    if (!window.THREE || typeof FidgetViewer === 'undefined') return;
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {

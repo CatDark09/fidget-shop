@@ -302,3 +302,6 @@ class FidgetViewer {
         this.renderer.render(this.scene, this.camera);
     }
 }
+
+// Ensure global availability
+window.FidgetViewer = FidgetViewer;
