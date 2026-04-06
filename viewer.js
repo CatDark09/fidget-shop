@@ -303,5 +303,8 @@ class FidgetViewer {
     }
 }
 
-// Ensure global availability
-window.FidgetViewer = FidgetViewer;
+// Explicit attachment to window to ensure visibility to script.js
+if (typeof window !== 'undefined') {
+    window.FidgetViewer = FidgetViewer;
+    console.log('[FidgetViewer] Class successfully attached to window object');
+}

@@ -4,7 +4,18 @@
 let cardViewers = [];
 
 function initLithoCardViewers() {
-    if (!window.THREE || typeof FidgetViewer === 'undefined') return;
+    if (typeof window.THREE === 'undefined') {
+        console.warn('[Shop] THREE.js not available yet');
+        return false;
+    }
+    if (typeof FidgetViewer === 'undefined' && typeof window.FidgetViewer === 'undefined') {
+        console.warn('[Shop] FidgetViewer class not available yet');
+        return false;
+    }
+    
+    // Ensure we use the global version from window if local lookup fails
+    const ViewerClass = window.FidgetViewer || FidgetViewer;
+    console.log('[Shop] Initializing 3D Card Viewers...');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -14,7 +25,8 @@ function initLithoCardViewers() {
             if (entry.isIntersecting) {
                 // Initialize if not already done
                 if (!container.viewer) {
-                    const viewer = new FidgetViewer(container.id);
+                    const ViewerClass = window.FidgetViewer || FidgetViewer;
+                    const viewer = new ViewerClass(container.id);
                     container.viewer = viewer;
                     viewer.loadModel(modelFile);
                     // Cards should not auto-rotate at all based on user request
@@ -44,14 +56,33 @@ function initLithoCardViewers() {
     });
 }
 
-// Run after scripts load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initLithoCardViewers, 500); // Give time for browser to settle
-    });
-} else {
-    setTimeout(initLithoCardViewers, 500);
+// Robust initialization with retries
+function startApp() {
+    let attempts = 0;
+    const maxAttempts = 20; // Try for 10 seconds
+
+    const checkAndInit = () => {
+        attempts++;
+        if (initLithoCardViewers()) {
+            console.log('[Shop] 3D Viewers initialized successfully');
+            return;
+        }
+
+        if (attempts < maxAttempts) {
+            setTimeout(checkAndInit, 500);
+        } else {
+            console.error('[Shop] Failed to initialize 3D viewers after 10 seconds. Check console for script errors.');
+        }
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAndInit);
+    } else {
+        checkAndInit();
+    }
 }
+
+startApp();
 
 
 // Filament Palette
