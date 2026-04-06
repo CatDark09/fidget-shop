@@ -7,12 +7,9 @@ const filaments = [
     { name: 'Sárga', color: '#eab308', type: 'standard' },
     { name: 'Kék', color: '#3b82f6', type: 'standard' },
     { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
-    { name: 'Fehér', color: '#f8fafc', type: 'standard' },
-    { name: 'Fekete', color: '#18181b', type: 'standard' },
     { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
     { name: 'Moon Palace (Rainbow Silk)', color: '#d0a6b0', type: 'silk', rainbow: 'linear-gradient(45deg, #a855f7, #fbbf24, #22d3ee)' },
     { name: 'Matte Rainbow', color: '#f87171', type: 'matte', rainbow: 'linear-gradient(45deg, #f87171, #fb923c, #fbbf24, #4ade80)' },
-    { name: 'Rainbow Candy (Silk)', color: '#f472b6', type: 'silk', rainbow: 'linear-gradient(45deg, #f472b6, #38bdf8, #818cf8)' },
     { name: 'Blue-Green Dual', color: '#0ea5e9', type: 'silk', rainbow: 'linear-gradient(45deg, #3b82f6, #10b981)' },
     { name: 'Blue-Pink Dual', color: '#8b5cf6', type: 'silk', rainbow: 'linear-gradient(45deg, #3b82f6, #ec4899)' }
 ];
@@ -188,7 +185,7 @@ const productData = {
     'hexagon-mini': {
         title: 'Kicsi Hexagon',
         images: [],
-        modelFile: 'Small Hexagon.stl',
+        modelFile: 'Small Hexagon.3mf',
         description: '<strong>Méret:</strong> 82 mm átmérő'
     },
     'gyro-ring-pack': {
@@ -206,7 +203,7 @@ const productData = {
     'half-gyro': {
         title: 'Half Gyro',
         images: [],
-        modelFile: 'Half Gyro.stl'
+        modelFile: 'Half Gyro.3mf'
     },
     'gear-spinner': {
         title: 'Pörgettyű Kerekekkel',
@@ -244,7 +241,7 @@ const productData = {
     'liquid-ball': {
         title: 'Liquid Ball',
         images: [],
-        modelFile: 'Liquid Ball.stl',
+        modelFile: 'Liquid Ball.3mf',
         description: '<span style="color: #666;"><i>(Egy kicsit hangosabb, mint a többi termék.)</i></span>'
     },
     'hand-roller': {
@@ -255,17 +252,20 @@ const productData = {
     'litho-plane': {
         title: 'Litofán Sík',
         images: [],
-        modelFile: ''
+        modelFile: 'Plane.stl',
+        description: '<strong>Rendelés:</strong> Csak a hosszt kell megadni, meg a hátulján lévő tartóhoz az átmérőt.<br><strong>Méret:</strong> Min.: 100mm, Max.: 200mm'
     },
     'litho-arc': {
         title: 'Litofán Ív',
         images: [],
-        modelFile: ''
+        modelFile: 'Arc.stl',
+        description: '<strong>Rendelés:</strong> Csak a hosszt kell megadni, meg a hátulján lévő tartóhoz az átmérőt.<br><strong>Méret:</strong> Min.: 100mm, Max.: 200mm'
     },
     'litho-cylinder': {
         title: 'Litofán Henger',
         images: [],
-        modelFile: ''
+        modelFile: 'Cylinder.stl',
+        description: '<strong>Rendelés:</strong> Csak átmérőt kell megadni.<br><strong>Méret:</strong> Min.: 75mm, Max.: 150mm'
     }
 };
 
@@ -456,12 +456,19 @@ document.querySelectorAll('.product-card').forEach(card => {
                         thumbnailsContainer.appendChild(thumb);
                     });
                 } else {
-                    mainImageContainer.innerHTML = '<div class="placeholder-image-large">🖼️</div>';
+                    mainImageContainer.innerHTML = '<div class="placeholder-image-large" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; font-size: 5rem; background: #eee;">🧊</div>';
                 }
 
                 // Show modal
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
+
+                // Ha nincs kép, de van 3D modell, automatikusan a 3D nézet nyíljon meg
+                if ((!product.images || product.images.length === 0) && product.modelFile) {
+                    if (btn3d && btn3d.onclick) {
+                        btn3d.onclick();
+                    }
+                }
             }
         } catch (error) {
             console.error("Modal error:", error);

@@ -41,20 +41,20 @@ class FidgetViewer {
         this.controls.autoRotateSpeed = 2.0;
 
         // Lighting - Professional PBR Setup
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
-        this.scene.add(ambientLight);
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        this.scene.add(this.ambientLight);
 
-        const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        mainLight.position.set(10, 20, 10);
-        this.scene.add(mainLight);
+        this.mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        this.mainLight.position.set(10, 20, 10);
+        this.scene.add(this.mainLight);
 
-        const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
-        fillLight.position.set(-10, 5, -10);
-        this.scene.add(fillLight);
+        this.fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        this.fillLight.position.set(-10, 5, -10);
+        this.scene.add(this.fillLight);
 
-        const topLight = new THREE.PointLight(0xffffff, 0.5);
-        topLight.position.set(0, 50, 0);
-        this.scene.add(topLight);
+        this.topLight = new THREE.PointLight(0xffffff, 0.5);
+        this.topLight.position.set(0, 50, 0);
+        this.scene.add(this.topLight);
 
         // Animation Loop
         this.animate = this.animate.bind(this);
@@ -64,7 +64,7 @@ class FidgetViewer {
         window.addEventListener('resize', () => this.onResize());
     }
 
-            loadModel(modelPath) {
+    loadModel(modelPath) {
         // Remove old model
         if (this.currentMesh) {
             this.scene.remove(this.currentMesh);
@@ -111,12 +111,10 @@ class FidgetViewer {
                 mainObject.traverse((child) => {
                     if (child.isMesh) {
                         child.material = defaultMaterial;
-                        // Some 3MF files have geometry offsets, we let the external box logic center it
                     }
                 });
                 
-                // Rotate upright if needed, though 3MF usually specifies up-axis.
-                // We'll apply the typical rotation
+                // Rotate upright
                 mainObject.rotation.set(-Math.PI / 2, 0, 0);
 
             } else {
@@ -156,7 +154,7 @@ class FidgetViewer {
         };
 
         if (ext === '3mf') {
-            const loader = new THREE.3MFLoader();
+            const loader = new THREE.ThreeMFLoader();
             loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
         } else {
             const loader = new THREE.STLLoader();
@@ -193,21 +191,18 @@ class FidgetViewer {
         }
     }
 
-    // Updated Method: Set Color and Material Properties (PBR)
-            setMaterial(options) {
+    setMaterial(options) {
         if (this.currentMesh) {
             const applyProps = (material) => {
                 if (options.color) material.color.set(options.color);
                 
-                // Handle Silk vs Matte properties with MeshStandardMaterial
                 if (options.type === 'silk') {
-                    material.roughness = 0.25; // Shiny/Silk effect
-                    material.metalness = 0.7; // Metallic look
+                    material.roughness = 0.25;
+                    material.metalness = 0.7;
                 } else if (options.type === 'matte') {
-                    material.roughness = 0.95; // Very dull
-                    material.metalness = 0.0; // Non-metallic
+                    material.roughness = 0.95;
+                    material.metalness = 0.0;
                 } else {
-                    // Standard Plastic
                     material.roughness = 0.5;
                     material.metalness = 0.1;
                 }
@@ -226,20 +221,30 @@ class FidgetViewer {
     }
 
     fitCameraToMesh(mesh) {
+        if (!mesh) return;
+        mesh.updateMatrixWorld();
         const box = new THREE.Box3().setFromObject(mesh);
         const size = box.getSize(new THREE.Vector3()).length();
         const center = box.getCenter(new THREE.Vector3());
 
-        this.camera.position.x = center.x + size; // Move camera back based on size
-        this.camera.position.y = center.y + size * 0.5;
-        this.camera.position.z = center.z + size;
-        this.camera.lookAt(center);
+        if (size === 0) return;
 
+        this.camera.position.x = center.x + size * 1.2;
+        this.camera.position.y = center.y + size * 0.8;
+        this.camera.position.z = center.z + size * 1.2;
+        
+        this.camera.lookAt(center);
+        
         this.controls.target.copy(center);
+        this.controls.update();
+
+        if (this.mainLight) this.mainLight.position.set(center.x + size, center.y + size, center.z + size);
+        if (this.fillLight) this.fillLight.position.set(center.x - size, center.y + size * 0.5, center.z - size);
+        if (this.topLight) this.topLight.position.set(center.x, center.y + size * 2, center.z);
     }
 
     onResize() {
-        if (!this.container) return;
+        if (!this.container || !this.renderer) return;
         this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
