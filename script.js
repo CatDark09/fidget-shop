@@ -27,7 +27,7 @@ function initLithoCardViewers() {
         scene.add(dLight);
 
         const loader = new THREE.STLLoader();
-        loader.load(`https://raw.githubusercontent.com/CatDark09/fidget-shop/main/models/${modelFile}`, (geometry) => {
+        loader.load(`models/${modelFile}`, (geometry) => {
             geometry.computeBoundingBox();
             const center = new THREE.Vector3();
             geometry.boundingBox.getCenter(center);
