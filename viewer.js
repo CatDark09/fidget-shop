@@ -8,8 +8,11 @@ class FidgetViewer {
 
         // Default Color (Nice blue/purple from theme)
         this.defaultColor = 0x6366f1;
+        // Unique ID for this viewer instance for debugging
+        this.id = Math.random().toString(36).substr(2, 9);
         this.currentMesh = null;
 
+        console.log(`[FidgetViewer ${this.id}] Initializing for container: ${containerId}`);
         this.init();
     }
 
@@ -187,12 +190,15 @@ class FidgetViewer {
             }
         };
 
+        const modelUrl = `models/${modelPath}?v=${this.id}`;
+        console.log(`[FidgetViewer ${this.id}] Loading model: ${modelUrl}`);
+
         if (ext === '3mf') {
             const loader = new THREE.ThreeMFLoader();
-            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+            loader.load(modelUrl, onLoad, onProgress, onError);
         } else {
             const loader = new THREE.STLLoader();
-            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+            loader.load(modelUrl, onLoad, onProgress, onError);
         }
     }
 
