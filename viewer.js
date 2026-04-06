@@ -129,7 +129,7 @@ class FidgetViewer {
 
         const ext = modelPath.split('.').pop().toLowerCase();
         
-        const onLoad = (object) => {
+        const onLoad = (passedObject) => {
             this.hideLoading();
             
             // Use Standard Material for PBR (Physically Based Rendering)
@@ -142,12 +142,13 @@ class FidgetViewer {
             let mainObject;
             if (ext === '3mf') {
                 // 3MF returns a Group
-                mainObject = object;
+                mainObject = passedObject.clone(); // Clone to ensure isolation
                 
                 // Override materials and center
                 mainObject.traverse((child) => {
                     if (child.isMesh) {
                         child.material = defaultMaterial;
+                        if (child.geometry) child.geometry = child.geometry.clone();
                     }
                 });
                 
@@ -155,14 +156,15 @@ class FidgetViewer {
                 mainObject.rotation.set(-Math.PI / 2, 0, 0);
 
             } else {
-                // STL returns Geometry
-                mainObject = new THREE.Mesh(object, defaultMaterial);
+                // STL returns Geometry - CLONE IT to avoid shared vertex transforms!
+                const geometry = passedObject.clone();
+                mainObject = new THREE.Mesh(geometry, defaultMaterial);
                 
                 // Center the geometry
-                object.computeBoundingBox();
+                geometry.computeBoundingBox();
                 const center = new THREE.Vector3();
-                object.boundingBox.getCenter(center);
-                object.translate(-center.x, -center.y, -center.z);
+                geometry.boundingBox.getCenter(center);
+                geometry.translate(-center.x, -center.y, -center.z);
 
                 // Rotate it upright
                 mainObject.rotation.x = -Math.PI / 2;
@@ -170,6 +172,9 @@ class FidgetViewer {
 
             this.scene.add(mainObject);
             this.currentMesh = mainObject;
+            this.modelName = modelPath;
+
+            console.log(`[FidgetViewer ${this.id}] Successfully displayed model: ${modelPath}`);
 
             // Adjust camera to fit
             this.fitCameraToMesh(mainObject);
