@@ -37,7 +37,7 @@ class FidgetViewer {
         // Controls
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.controls.enableDamping = true;
-        this.controls.autoRotate = true;
+        this.controls.autoRotate = false; // Disabled at user request
         this.controls.autoRotateSpeed = 2.0;
 
         // Lighting - Professional PBR Setup
@@ -56,12 +56,46 @@ class FidgetViewer {
         this.topLight.position.set(0, 50, 0);
         this.scene.add(this.topLight);
 
-        // Animation Loop
+        // Animation Loop Control
+        this.isRunning = true;
         this.animate = this.animate.bind(this);
         requestAnimationFrame(this.animate);
 
         // Handle Resize
         window.addEventListener('resize', () => this.onResize());
+    }
+
+    stop() {
+        this.isRunning = false;
+    }
+
+    start() {
+        if (!this.isRunning) {
+            this.isRunning = true;
+            requestAnimationFrame(this.animate);
+        }
+    }
+
+    dispose() {
+        this.stop();
+        if (this.renderer) {
+            this.renderer.dispose();
+            if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+                this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+            }
+        }
+        if (this.scene) {
+            this.scene.traverse((object) => {
+                if (object.isMesh) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach(m => m.dispose());
+                    } else if (object.material) {
+                        object.material.dispose();
+                    }
+                }
+            });
+        }
     }
 
     loadModel(modelPath) {
@@ -251,6 +285,7 @@ class FidgetViewer {
     }
 
     animate() {
+        if (!this.isRunning) return;
         requestAnimationFrame(this.animate);
         this.controls.update();
         this.renderer.render(this.scene, this.camera);

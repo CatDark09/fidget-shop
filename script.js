@@ -1,79 +1,56 @@
 // FidgetViewer is loaded globally from viewer.js
 
 // Mini 3D card viewers for lithophane section
+let cardViewers = [];
+
 function initLithoCardViewers() {
-    document.querySelectorAll('.litho-card-viewer').forEach(container => {
-        const modelFile = container.getAttribute('data-model');
-        if (!modelFile || !window.THREE) return;
+    if (!window.THREE || !window.FidgetViewer) return;
 
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x18181b);
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const container = entry.target;
+            const modelFile = container.getAttribute('data-model');
+            
+            if (entry.isIntersecting) {
+                // Initialize if not already done
+                if (!container.viewer) {
+                    const viewer = new FidgetViewer(container.id);
+                    container.viewer = viewer;
+                    viewer.loadModel(modelFile);
+                    // Cards should not auto-rotate at all based on user request
+                    viewer.stop(); // Init static
+                    cardViewers.push(viewer);
 
-        const w = container.clientWidth || 300;
-        const h = container.clientHeight || 200;
-
-        const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 10000);
-        camera.position.set(0, 50, 150);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setSize(w, h);
-        container.appendChild(renderer.domElement);
-
-        // Lighting
-        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-        const dLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        dLight.position.set(1, 2, 1);
-        scene.add(dLight);
-
-        const loader = new THREE.STLLoader();
-        loader.load(`models/${modelFile}`, (geometry) => {
-            geometry.computeBoundingBox();
-            const center = new THREE.Vector3();
-            geometry.boundingBox.getCenter(center);
-            geometry.translate(-center.x, -center.y, -center.z);
-
-            const material = new THREE.MeshStandardMaterial({ color: 0x6366f1, roughness: 0.5, metalness: 0.1 });
-            const mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.x = -Math.PI / 2;
-            scene.add(mesh);
-
-            // Fit camera
-            const box = new THREE.Box3().setFromObject(mesh);
-            const size = box.getSize(new THREE.Vector3()).length();
-            const boxCenter = box.getCenter(new THREE.Vector3());
-            camera.position.set(boxCenter.x, boxCenter.y + size * 0.5, boxCenter.z + size * 1.5);
-            camera.lookAt(boxCenter);
-            dLight.position.set(boxCenter.x + size, boxCenter.y + size, boxCenter.z + size);
-        }, undefined, (err) => {
-            console.warn('Card viewer error:', modelFile, err);
-        });
-
-        // Auto-rotate animation
-        let angle = 0;
-        let lastBoxCenter = new THREE.Vector3();
-        let lastSize = 150;
-        function animateCard() {
-            requestAnimationFrame(animateCard);
-            angle += 0.008;
-            // Orbit camera around Y axis
-            scene.children.forEach(child => {
-                if (child.isMesh) {
-                    child.rotation.z = angle;
+                    // Start animation ONLY when hovering or when visible if preferred, 
+                    // but user said "only when they want to move it".
+                    // So we start the loop but autoRotate is false.
+                    // Actually, to save battery, we only 'start' the loop when mouse enters.
+                    container.addEventListener('mouseenter', () => viewer.start());
+                    container.addEventListener('mouseleave', () => viewer.stop());
+                } else {
+                    // Resume if needed, or keep static
                 }
-            });
-            renderer.render(scene, camera);
-        }
-        animateCard();
+            } else {
+                // Out of view, stop the loop to save resources
+                if (container.viewer) {
+                    container.viewer.stop();
+                }
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.litho-card-viewer').forEach(container => {
+        observer.observe(container);
     });
 }
 
 // Run after scripts load
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLithoCardViewers);
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initLithoCardViewers, 500); // Give time for browser to settle
+    });
 } else {
-    // Scripts already loaded, wait a tick for THREE to be ready
-    setTimeout(initLithoCardViewers, 100);
+    setTimeout(initLithoCardViewers, 500);
 }
 
 
@@ -558,8 +535,11 @@ document.querySelectorAll('.product-card').forEach(card => {
 function closeModalHandler() {
     modal.classList.remove('show');
     document.body.style.overflow = 'auto';
-    // Optional: Stop animation loop if you want to save battery, 
-    // but lightweight viewer is usually fine.
+    
+    // Stop 3D viewer animation loop to save resources and WebGL contexts
+    if (fidgetViewer) {
+        fidgetViewer.stop();
+    }
 }
 
 closeModal.addEventListener('click', closeModalHandler);
