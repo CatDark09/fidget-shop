@@ -155,10 +155,10 @@ class FidgetViewer {
 
         if (ext === '3mf') {
             const loader = new THREE.ThreeMFLoader();
-            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+            loader.load(`https://raw.githubusercontent.com/CatDark09/fidget-shop/main/models/${modelPath}`, onLoad, onProgress, onError);
         } else {
             const loader = new THREE.STLLoader();
-            loader.load(`models/${modelPath}`, onLoad, onProgress, onError);
+            loader.load(`https://raw.githubusercontent.com/CatDark09/fidget-shop/main/models/${modelPath}`, onLoad, onProgress, onError);
         }
     }
 
