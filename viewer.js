@@ -6,11 +6,12 @@ class FidgetViewer {
         this.container = document.getElementById(containerId);
         if (!this.container) return;
 
-        // Default Color (Nice blue/purple from theme)
-        this.defaultColor = 0x6366f1;
+        // Default Color (White for lithophanes as requested)
+        this.defaultColor = 0xffffff;
         // Unique ID for this viewer instance for debugging
         this.id = Math.random().toString(36).substr(2, 9);
         this.currentMesh = null;
+        this.modelName = '';
 
         console.log(`[FidgetViewer ${this.id}] Initializing for container: ${containerId}`);
         this.init();
@@ -102,25 +103,25 @@ class FidgetViewer {
     }
 
     loadModel(modelPath) {
-        // Remove old model
+        // Clear existing model and free up GPU memory
         if (this.currentMesh) {
-            this.scene.remove(this.currentMesh);
-            if (this.currentMesh.geometry) this.currentMesh.geometry.dispose();
-            if (this.currentMesh.material) this.currentMesh.material.dispose();
+            console.log(`[FidgetViewer ${this.id}] Disposing old resources...`);
             
-            // Handle groups (3MF)
-            if (this.currentMesh.isGroup) {
-                this.currentMesh.traverse((child) => {
-                    if (child.isMesh) {
-                        child.geometry.dispose();
-                        if (Array.isArray(child.material)) {
-                            child.material.forEach(m => m.dispose());
-                        } else if (child.material) {
-                            child.material.dispose();
-                        }
+            const disposeObject = (obj) => {
+                if (obj.geometry) obj.geometry.dispose();
+                if (obj.material) {
+                    if (Array.isArray(obj.material)) {
+                        obj.material.forEach(m => m.dispose());
+                    } else {
+                        obj.material.dispose();
                     }
-                });
-            }
+                }
+            };
+
+            this.scene.remove(this.currentMesh);
+            this.currentMesh.traverse((child) => {
+                if (child.isMesh) disposeObject(child);
+            });
             this.currentMesh = null;
         }
 
