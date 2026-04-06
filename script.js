@@ -429,9 +429,10 @@ document.querySelectorAll('.product-card').forEach(card => {
 
                         // Initialize Viewer
                         if (!fidgetViewer) {
-                            fidgetViewer = new FidgetViewer('modal-3d-container');
+                            fidgetViewer = new ViewerClass('modal-3d-container');
                         }
                         fidgetViewer.loadModel(product.modelFile);
+                        fidgetViewer.start(); // RESTART THE LOOP!
                         fidgetViewer.onResize(); // Force resize check
 
                         // Inject Color Selection for 3D Viewer (Standard Colors Only)
