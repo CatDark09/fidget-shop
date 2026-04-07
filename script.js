@@ -269,7 +269,7 @@ const productData = {
     },
     'hexagon-mini': {
         title: 'Kicsi Hexagon',
-        images: [],
+        images: ['kicsihexagon1.jpg', 'kicsihexagon2.jpg'],
         modelFile: 'Small Hexagon.stl',
         description: '<strong>Méret:</strong> 82 mm átmérő'
     },
@@ -287,7 +287,7 @@ const productData = {
     },
     'half-gyro': {
         title: 'Half Gyro',
-        images: [],
+        images: ['halfgyro2.jpg', 'halfgyro1.jpg'],
         modelFile: 'Half Gyro.stl'
     },
     'gear-spinner': {
@@ -325,13 +325,13 @@ const productData = {
     },
     'liquid-ball': {
         title: 'Liquid Ball',
-        images: [],
+        images: ['liquidball2.jpg', 'liquidball1.jpg'],
         modelFile: 'Liquid Ball.stl',
         description: '<span style="color: #666;"><i>(Egy kicsit hangosabb, mint a többi termék.)</i></span>'
     },
     'hand-roller': {
         title: 'Hand Roller',
-        images: [],
+        images: ['handroller1.jpg', 'handroller2.jpg'],
         modelFile: ''
     },
     'litho-plane': {
