@@ -388,6 +388,15 @@ header {
     border: 1px solid var(--success-color);
 }
 
+.form-message.info {
+    display: block;
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid var(--primary-color);
+    text-align: center;
+    font-weight: 600;
+}
+
 .form-message.error {
     display: block;
     background: #fee2e2;
