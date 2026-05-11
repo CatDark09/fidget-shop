@@ -242,13 +242,13 @@ const productData = {
     'transforming-ball': {
         title: 'Transforming Fidget Ball',
         images: ['Transforming_Fidget_Ball_1.jpg', 'Transforming_Fidget_Ball_2.jpg'],
-        modelFile: 'Transforming_Fidget_Ball_Micro.3mf',
+        modelFile: 'Transforming_Fidget_Ball_Micro.stl',
         description: ''
     },
     'honeycomb-hexagon': {
         title: 'Honeycomb Hexagon',
         images: ['Honeycomb_Hexagon_1.jpg', 'Honeycomb_Hexagon_2.jpg'],
-        modelFile: 'Honeycomb_Fidget.3mf',
+        modelFile: 'Honeycomb_Fidget.stl',
         description: ''
     },
     // Litofánok – csak 3D modell, nincs kép, nincs színválasztó (csak fehér)
