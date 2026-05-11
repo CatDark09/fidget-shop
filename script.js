@@ -92,7 +92,112 @@ const filaments = [
     { name: 'Sárga', color: '#eab308', type: 'standard' },
     { name: 'Kék', color: '#3b82f6', type: 'standard' },
     { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
-    { name: 'Ezüst', color: '#94a3b8', type: 'silk' }
+    { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
+    { name: 'Arany-Zöld Duál', color: '#ffd700', rainbow: 'linear-gradient(135deg, #ffd700 0%, #22c55e 100%)', type: 'silk' },
+    { name: 'Világoskék', color: '#add8e6', type: 'standard' },
+    { name: 'Fekete-Rózsaszín Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)', type: 'silk' },
+    { name: 'Rózsaszín-Zöld Duál', color: '#ff69b4', rainbow: 'linear-gradient(135deg, #ff69b4 0%, #22c55e 100%)', type: 'silk' },
+    { name: 'Rózs<dyad-write path="script.js" description="Új színek hozzáadása és a script.js fájl befejezése">
+// FidgetViewer is loaded globally from viewer.js
+
+// Mini 3D card viewers for lithophane section
+let cardViewers = [];
+
+function initLithoCardViewers() {
+    if (typeof window.THREE === 'undefined') {
+        console.warn('[Shop] THREE.js not available yet');
+        return false;
+    }
+    if (typeof FidgetViewer === 'undefined' && typeof window.FidgetViewer === 'undefined') {
+        console.warn('[Shop] FidgetViewer class not available yet');
+        return false;
+    }
+    
+    // Ensure we use the global version from window if local lookup fails
+    const ViewerClass = window.FidgetViewer || FidgetViewer;
+    console.log('[Shop] Initializing 3D Card Viewers...');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const container = entry.target;
+            const modelFile = container.getAttribute('data-model');
+            
+            if (entry.isIntersecting) {
+                // Initialize if not already done
+                if (!container.viewer) {
+                    const ViewerClass = window.FidgetViewer || FidgetViewer;
+                    const viewer = new ViewerClass(container.id);
+                    container.viewer = viewer;
+                    viewer.loadModel(modelFile);
+                    // Cards should not auto-rotate at all based on user request
+                    viewer.stop(); // Init static
+                    cardViewers.push(viewer);
+
+                    // Start animation ONLY when hovering or when visible if preferred, 
+                    // but user said "only when they want to move it".
+                    // So we start the loop but autoRotate is false.
+                    // Actually, to save battery, we only 'start' the loop when mouse enters.
+                    container.addEventListener('mouseenter', () => viewer.start());
+                    container.addEventListener('mouseleave', () => viewer.stop());
+                } else {
+                    // Resume if needed, or keep static
+                }
+            } else {
+                // Out of view, stop the loop to save resources
+                if (container.viewer) {
+                    container.viewer.stop();
+                }
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.litho-card-viewer').forEach(container => {
+        observer.observe(container);
+    });
+}
+
+// Robust initialization with retries
+function startApp() {
+    let attempts = 0;
+    const maxAttempts = 20; // Try for 10 seconds
+
+    const checkAndInit = () => {
+        attempts++;
+        if (initLithoCardViewers()) {
+            console.log('[Shop] 3D Viewers initialized successfully');
+            return;
+        }
+
+        if (attempts < maxAttempts) {
+            setTimeout(checkAndInit, 500);
+        } else {
+            console.error('[Shop] Failed to initialize 3D viewers after 10 seconds. Check console for script errors.');
+        }
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', checkAndInit);
+    } else {
+        checkAndInit();
+    }
+}
+
+startApp();
+
+
+// Filament Palette
+const filaments = [
+    { name: 'Piros', color: '#ef4444', type: 'standard' },
+    { name: 'Zöld', color: '#22c55e', type: 'standard' },
+    { name: 'Sárga', color: '#eab308', type: 'standard' },
+    { name: 'Kék', color: '#3b82f6', type: 'standard' },
+    { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
+    { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
+    { name: 'Arany-Zöld Duál', color: '#ffd700', rainbow: 'linear-gradient(135deg, #ffd700 0%, #22c55e 100%)', type: 'silk' },
+    { name: 'Világoskék', color: '#add8e6', type: 'standard' },
+    { name: 'Fekete-Rózsaszín Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)', type: 'silk' },
+    { name: 'Rózsaszín-Zöld Duál', color: '#ff69b4', rainbow: 'linear-gradient(135deg, #ff69b4 0%, #22c55e 100%)', type: 'silk' },
+    { name: 'Rózsaszín', color: '#ff69b4', type: 'standard' }
 ];
 
 // Render Colors in the new section
