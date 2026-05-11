@@ -330,18 +330,18 @@ const productData = {
     },
     'twist-fidget': {
         title: 'Twist Fidget',
-        images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
+        images: ['twist fidget 1.jpg', 'twist fidget 2.jpg'],
         description: 'Egy különleges, csavarható fidget játék.'
     },
     'transforming-ball': {
         title: 'Transforming Fidget Ball',
-        images: ['transforming_ball_1.jpg', 'transforming_ball_2.jpg'],
+        images: ['Transforming Fidget Ball 1.jpg', 'Transforming Fidget Ball 2.jpg'],
         modelFile: 'Transforming_Fidget_Ball_Micro.3mf',
         description: 'Alakítható, szétnyitható fidget gömb.'
     },
     'honeycomb-hexagon': {
         title: 'Honeycomb Hexagon',
-        images: ['honeycomb_hexagon_1.jpg', 'honeycomb_hexagon_2.jpg'],
+        images: ['Honeycomb Hexagon 1.jpg', 'Honeycomb Hexagon 2.jpg'],
         modelFile: 'Honeycomb_Fidget.3mf',
         description: 'Méhsejt mintázatú hexagonális fidget.'
     },
