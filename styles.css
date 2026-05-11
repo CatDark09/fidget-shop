@@ -404,6 +404,33 @@ header {
     border: 1px solid var(--error-color);
 }
 
+/* Disabled order form */
+.contact-form.is-disabled input,
+.contact-form.is-disabled textarea {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+    border-color: #e5e7eb;
+}
+
+.contact-form.is-disabled input::placeholder,
+.contact-form.is-disabled textarea::placeholder {
+    color: #9ca3af;
+}
+
+.btn-coming-soon,
+.btn-coming-soon:disabled,
+.btn-coming-soon:hover {
+    background: #9ca3af !important;
+    color: var(--white) !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: not-allowed !important;
+    opacity: 1;
+    pointer-events: none;
+    letter-spacing: 0.02em;
+}
+
 /* Footer */
 footer {
     background: var(--text-color);

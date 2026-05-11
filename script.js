@@ -235,20 +235,20 @@ const productData = {
     // Új termékek – leírás eltávolítva
     'twist-fidget': {
         title: 'Twist Fidget',
-        images: ['twist_fidget_1.jpg'],
+        images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
         modelFile: '',
         description: ''
     },
     'transforming-ball': {
         title: 'Transforming Fidget Ball',
         images: ['Transforming_Fidget_Ball_1.jpg', 'Transforming_Fidget_Ball_2.jpg'],
-        modelFile: 'Transforming_Fidget_Ball_Micro.3mf',
+        modelFile: 'Transforming_Fidget_Ball_Micro.stl',
         description: ''
     },
     'honeycomb-hexagon': {
         title: 'Honeycomb Hexagon',
         images: ['Honeycomb_Hexagon_1.jpg', 'Honeycomb_Hexagon_2.jpg'],
-        modelFile: 'Honeycomb_Fidget.3mf',
+        modelFile: 'Honeycomb_Fidget.stl',
         description: ''
     },
     // Litofánok – csak 3D modell, nincs kép, nincs színválasztó (csak fehér)
