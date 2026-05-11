@@ -235,7 +235,7 @@ const productData = {
     // Új termékek – leírás eltávolítva
     'twist-fidget': {
         title: 'Twist Fidget',
-        images: ['twist_fidget_1.jpg'],
+        images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
         modelFile: '',
         description: ''
     },

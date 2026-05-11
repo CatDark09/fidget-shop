@@ -155,11 +155,11 @@
 <h2 class="section-title">Rendelés és Kapcsolat</h2>
 <p class="section-subtitle">Az alábbi űrlapon adhatod le a megrendelésedet és itt tudsz érdeklődni az egyedi termékekről is.</p>
 <div class="contact-wrapper">
-<form id="contactForm" class="contact-form">
-<div class="form-group"><label for="name">Név *</label><input type="text" id="name" name="name" required></div>
-<div class="form-group"><label for="email">Email cím *</label><input type="email" id="email" name="email" required></div>
-<div class="form-group"><label for="message">Üzenet / Rendelési részletek *</label><textarea id="message" name="message" rows="5" required placeholder="Írd meg melyik terméket, milyen színben és hány darabot szeretnél!"></textarea></div>
-<button type="submit" class="btn-primary">Üzenet küldése</button>
+<form id="contactForm" class="contact-form is-disabled" aria-disabled="true">
+<div class="form-group"><label for="name">Név *</label><input type="text" id="name" name="name" required disabled></div>
+<div class="form-group"><label for="email">Email cím *</label><input type="email" id="email" name="email" required disabled></div>
+<div class="form-group"><label for="message">Üzenet / Rendelési részletek *</label><textarea id="message" name="message" rows="5" required placeholder="Írd meg melyik terméket, milyen színben és hány darabot szeretnél!" disabled></textarea></div>
+<button type="submit" class="btn-primary btn-coming-soon" disabled>Hamarosan elérhető lesz</button>
 <div id="formMessage" class="form-message"></div>
 </form>
 </div>
@@ -196,6 +196,6 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
 <!-- Custom Scripts -->
 <script src="viewer.js?v=4"></script>
-<script src="script.js?v=11"></script>
+<script src="script.js?v=13"></script>
 </body>
 </html>
