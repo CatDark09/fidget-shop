@@ -1,377 +1,201 @@
-<!DOCTYPE html>
+< !DOCTYPE html>
 <html lang="hu">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printed Fidget Shop</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Printed Fidget Shop</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
 </head>
-
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="logo">
-                    <h1>🎲 3D Fidget Shop</h1>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Kezdőlap</a></li>
-                    <li><a href="#products">Termékek</a></li>
-                    <li><a href="#lithophanes">Litofánok</a></li>
-                    <li><a href="#colors">Színek</a></li>
-                    <li><a href="#contact">Kapcsolat</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h2>Üdvözlünk a 3D Nyomtatott Fidget Webshopban!</h2>
-                    <p>Személyesen készítünk minden terméket egyedi 3D nyomtatással. Nézz körül a kínálatban és ha megtetszik valami, add le a rendelésed az oldal alján található űrlap segítségével! Egyedi megrendelésre is van lehetőség. Írj nekünk és egyeztetünk róla!</p>
-                    <a href="#products" class="btn-primary">Böngészés</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="products" class="products">
-            <div class="container">
-                <h2 class="section-title">Termékeink</h2>
-                <p class="section-subtitle">Válassz a kínálatunkból vagy kérj egyedi megoldást!</p>
-
-                <div class="products-grid">
-                    <div class="product-card" data-product="fidget-blanket">
-                        <div class="product-image">
-                            <img src="images/blanket1.jpg" alt="Blanket">
-                        </div>
-                        <div class="product-info">
-                            <h3>Blanket (Normál verzió)</h3>
-                            <span class="product-price">1500 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="fidget-blanket-mini">
-                        <div class="product-image">
-                            <img src="images/mini_blanket1.jpg" alt="Blanket Mini">
-                        </div>
-                        <div class="product-info">
-                            <h3>Blanket (Mini verzió)</h3>
-                            <span class="product-price">500 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="hexagon-twist">
-                        <div class="product-image">
-                            <img src="images/hexagon1.jpg" alt="Nagy Hexagon">
-                        </div>
-                        <div class="product-info">
-                            <h3>Nagy Hexagon</h3>
-                            <span class="product-price">1400 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="hexagon-mini">
-                        <div class="product-image">
-                            <img src="images/kicsihexagon1.jpg" alt="Kicsi Hexagon">
-                        </div>
-                        <div class="product-info">
-                            <h3>Kicsi Hexagon</h3>
-                            <span class="product-price">700 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="gyro-ring-pack">
-                        <div class="product-image">
-                            <img src="images/gyro1_(5pack).jpg" alt="Gyro Gyűrűk">
-                        </div>
-                        <div class="product-info">
-                            <h3>Gyro Gyűrűk (5 db-os csomag)</h3>
-                            <span class="product-price">1100 Ft / csomag</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="gyro-ring">
-                        <div class="product-image">
-                            <img src="images/gyro1_(1pack).jpg" alt="Gyro Gyűrű">
-                        </div>
-                        <div class="product-info">
-                            <h3>Gyro Gyűrű (1 db)</h3>
-                            <span class="product-price">350 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="half-gyro">
-                        <div class="product-image">
-                            <img src="images/halfgyro2.jpg" alt="Half Gyro" style="object-position: center 30%;">
-                        </div>
-                        <div class="product-info">
-                            <h3>Half Gyro</h3>
-                            <span class="product-price">800 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="gear-spinner">
-                        <div class="product-image">
-                            <img src="images/gear_spinner1.jpg" alt="Pörgettyű Kerekekkel">
-                        </div>
-                        <div class="product-info">
-                            <h3>Pörgettyű Kerekekkel</h3>
-                            <span class="product-price">1200 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="spinner-ring">
-                        <div class="product-image">
-                            <img src="images/rign_spinner1.jpg" alt="Sima Pörgettyű">
-                        </div>
-                        <div class="product-info">
-                            <h3>Fidget Ring</h3>
-                            <span class="product-price">350 Ft / db (5+ esetén 300 Ft)</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="planetary-gear">
-                        <div class="product-image">
-                            <img src="images/dual_ring_spinner1.jpg" alt="2 Ujjas Pörgettyű">
-                        </div>
-                        <div class="product-info">
-                            <h3>2 Ujjas Pörgettyű</h3>
-                            <span class="product-price">350 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="cube-angled">
-                        <div class="product-image">
-                            <img src="images/inifinty_cube1.jpg" alt="Végtelen Kocka">
-                        </div>
-                        <div class="product-info">
-                            <h3>Végtelen Kocka</h3>
-                            <span class="product-price">800 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="slinky">
-                        <div class="product-image">
-                            <img src="images/slinky1.jpg" alt="Slinky">
-                        </div>
-                        <div class="product-info">
-                            <h3>Slinky</h3>
-                            <span class="product-price">3000 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="sectioned-cube">
-                        <div class="product-image">
-                            <img src="images/liquid_cube1.jpg" alt="Liquid Cube">
-                        </div>
-                        <div class="product-info">
-                            <h3>Liquid Cube</h3>
-                            <span class="product-price">3000 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="liquid-ball">
-                        <div class="product-image">
-                            <img src="images/liquidball2.jpg" alt="Liquid Ball">
-                        </div>
-                        <div class="product-info">
-                            <h3>Liquid Ball</h3>
-                            <span class="product-price">2000 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="hand-roller">
-                        <div class="product-image">
-                            <img src="images/handroller1.jpg" alt="Hand Roller">
-                        </div>
-                        <div class="product-info">
-                            <h3>Hand Roller</h3>
-                            <span class="product-price">1000 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <!-- Új termékek -->
-                    <div class="product-card" data-product="twist-fidget">
-                        <div class="product-image">
-                            <img src="images/twist fidget 1.jpg" alt="Twist Fidget">
-                        </div>
-                        <div class="product-info">
-                            <h3>Twist Fidget</h3>
-                            <span class="product-price">1000 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="transforming-ball">
-                        <div class="product-image">
-                            <img src="images/Transforming Fidget Ball 1.jpg" alt="Transforming Fidget Ball">
-                        </div>
-                        <div class="product-info">
-                            <h3>Transforming Fidget Ball</h3>
-                            <span class="product-price">2500 Ft / db</span>
-                        </div>
-                    </div>
-
-                    <div class="product-card" data-product="honeycomb-hexagon">
-                        <div class="product-image">
-                            <img src="images/Honeycomb Hexagon 1.jpg" alt="Honeycomb Hexagon">
-                        </div>
-                        <div class="product-info">
-                            <h3>Honeycomb Hexagon</h3>
-                            <span class="product-price">750 Ft / db</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="colors" class="colors-section">
-            <div class="container">
-                <h2 class="section-title">Elérhető Színek</h2>
-                <p class="section-subtitle">Válaszd ki a kedvencedet! A termékek az alábbi színekből kérhetőek. A színek folyamatosan frissülnek.</p>
-                <div class="colors-grid" id="colorsGrid">
-                    <!-- Colors injected by script.js -->
-                </div>
-            </div>
-        </section>
-
-        <section id="lithophanes" class="products" style="background-color: var(--light-bg);">
-            <div class="container">
-                <h2 class="section-title">Litofánok</h2>
-
-                <div class="products-grid">
-                    <div class="product-card" data-product="litho-plane">
-                        <div class="product-image" style="padding:0;overflow:hidden;">
-                            <div class="litho-card-viewer" id="card-viewer-plane" data-model="Plane.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Litofán Sík</h3>
-                            <span class="product-price">Egyedi árazás</span>
-                            <p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Hossz: 100mm - 200mm</p>
-                        </div>
-                    </div>
-                    <div class="product-card" data-product="litho-arc">
-                        <div class="product-image" style="padding:0;overflow:hidden;">
-                            <div class="litho-card-viewer" id="card-viewer-arc" data-model="Arc.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Litofán Ív</h3>
-                            <span class="product-price">Egyedi árazás</span>
-                            <p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Hossz: 100mm - 200mm</p>
-                        </div>
-                    </div>
-                    <div class="product-card" data-product="litho-cylinder">
-                        <div class="product-image" style="padding:0;overflow:hidden;">
-                            <div class="litho-card-viewer" id="card-viewer-cylinder" data-model="Cylinder.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
-                        </div>
-                        <div class="product-info">
-                            <h3>Litofán Henger</h3>
-                            <span class="product-price">Egyedi árazás</span>
-                            <p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Átmérő: 75mm - 150mm</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2 class="section-title">Rendelés és Kapcsolat</h2>
-                <p class="section-subtitle">Az alábbi űrlapon adhatod le a megrendelésedet és itt tudsz érdeklődni az egyedi termékekről is.</p>
-
-                <div class="contact-wrapper">
-                    <form id="contactForm" class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Név *</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email cím *</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Üzenet / Rendelési részletek *</label>
-                            <textarea id="message" name="message" rows="5" required
-                                placeholder="Írd meg melyik terméket, milyen színben és hány darabot szeretnél!"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-primary">Üzenet küldése</button>
-                        <div id="formMessage" class="form-message"></div>
-                    </form>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Fidget Piac. Minden jog fenntartva.</p>
-        </div>
-    </footer>
-
-    <!-- Product Modal -->
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close">&times;</span>
-            <div class="modal-body">
-                <div class="modal-images">
-                    <div class="view-controls"
-                        style="display: flex; gap: 10px; margin-bottom: 10px; justify-content: center;">
-                        <button id="btn-view-photo" class="btn-toggle active"
-                            style="padding: 5px 15px; border-radius: 15px; border: 1px solid #6366f1; background: #6366f1; color: white; cursor: pointer;">📷
-                            Fotó</button>
-                        <button id="btn-view-3d" class="btn-toggle"
-                            style="padding: 5px 15px; border-radius: 15px; border: 1px solid #ccc; background: white; cursor: pointer;">🧊
-                            3D Nézet</button>
-                    </div>
-
-                    <div class="modal-main-image" id="modal-photo-container">
-                        <div class="placeholder-image-large">🖼️</div>
-                    </div>
-
-                    <div id="modal-3d-container"
-                        style="width: 100%; height: 400px; display: none; border-radius: 15px; overflow: hidden; position: relative;">
-                    </div>
-
-                    <div id="color-selection-container" style="display: none; margin-top: 1rem;">
-                        <!-- Color swatches will be injected here -->
-                    </div>
-
-                    <div class="modal-thumbnails">
-                        <!-- Thumbnails will be injected here -->
-                    </div>
-                </div>
-                <div class="modal-info">
-                    <h2 id="modal-title"></h2>
-                    <div id="modal-description" style="margin-top: 15px; margin-bottom: 20px; line-height: 1.5; color: #333; font-size: 0.95em;"></div>
-                    <div class="modal-cta">
-                        <a href="#contact" class="btn-primary">Rendelés</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Three.js for 3D Viewer -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <!-- 3MF Support -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
-
-    <!-- Custom Scripts -->
-    <script src="viewer.js?v=4"></script>
-    <script src="script.js?v=9"></script>
+<header>
+<nav class="navbar">
+<div class="container">
+<div class="logo">
+<h1>🎲 3D Fidget Shop</h1>
+</div>
+<ul class="nav-menu">
+<li><a href="#home">Kezdőlap</a></li>
+<li><a href="#products">Termékek</a></li>
+<li><a href="#lithophanes">Litofánok</a></li>
+<li><a href="#colors">Színek</a></li>
+<li><a href="#contact">Kapcsolat</a></li>
+</ul>
+</div>
+</nav>
+</header>
+<main>
+<section id="home" class="hero">
+<div class="container">
+<div class="hero-content">
+<h2>Üdvözlünk a 3D Nyomtatott Fidget Webshopban!</h2>
+<p>Személyesen készítünk minden terméket egyedi 3D nyomtatással. Nézz körül a kínálatban és ha megtetszik valami, add le a rendelésed az oldal alján található űrlap segítségével! Egyedi megrendelésre is van lehetőség. Írj nekünk és egyeztetünk róla!</p>
+<a href="#products" class="btn-primary">Böngészés</a>
+</div>
+</div>
+</section>
+<section id="products" class="products">
+<div class="container">
+<h2 class="section-title">Termékeink</h2>
+<p class="section-subtitle">Válassz a kínálatunkból vagy kérj egyedi megoldást!</p>
+<div class="products-grid">
+<div class="product-card" data-product="fidget-blanket">
+<div class="product-image"><img src="images/blanket1.jpg" alt="Blanket"></div>
+<div class="product-info"><h3>Blanket (Normál verzió)</h3><span class="product-price">1500 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="fidget-blanket-mini">
+<div class="product-image"><img src="images/mini_blanket1.jpg" alt="Blanket Mini"></div>
+<div class="product-info"><h3>Blanket (Mini verzió)</h3><span class="product-price">500 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="hexagon-twist">
+<div class="product-image"><img src="images/hexagon1.jpg" alt="Nagy Hexagon"></div>
+<div class="product-info"><h3>Nagy Hexagon</h3><span class="product-price">1400 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="hexagon-mini">
+<div class="product-image"><img src="images/kicsihexagon1.jpg" alt="Kicsi Hexagon"></div>
+<div class="product-info"><h3>Kicsi Hexagon</h3><span class="product-price">700 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="gyro-ring-pack">
+<div class="product-image"><img src="images/gyro1_(5pack).jpg" alt="Gyro Gyűrűk"></div>
+<div class="product-info"><h3>Gyro Gyűrűk (5 db-os csomag)</h3><span class="product-price">1100 Ft / csomag</span></div>
+</div>
+<div class="product-card" data-product="gyro-ring">
+<div class="product-image"><img src="images/gyro1_(1pack).jpg" alt="Gyro Gyűrű"></div>
+<div class="product-info"><h3>Gyro Gyűrű (1 db)</h3><span class="product-price">350 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="half-gyro">
+<div class="product-image"><img src="images/halfgyro2.jpg" alt="Half Gyro" style="object-position: center 30%;"></div>
+<div class="product-info"><h3>Half Gyro</h3><span class="product-price">800 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="gear-spinner">
+<div class="product-image"><img src="images/gear_spinner1.jpg" alt="Pörgettyű Kerekekkel"></div>
+<div class="product-info"><h3>Pörgettyű Kerekekkel</h3><span class="product-price">1200 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="spinner-ring">
+<div class="product-image"><img src="images/rign_spinner1.jpg" alt="Sima Pörgettyű"></div>
+<div class="product-info"><h3>Fidget Ring</h3><span class="product-price">350 Ft / db (5+ esetén 300 Ft)</span></div>
+</div>
+<div class="product-card" data-product="planetary-gear">
+<div class="product-image"><img src="images/dual_ring_spinner1.jpg" alt="2 Ujjas Pörgettyű"></div>
+<div class="product-info"><h3>2 Ujjas Pörgettyű</h3><span class="product-price">350 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="cube-angled">
+<div class="product-image"><img src="images/inifinty_cube1.jpg" alt="Végtelen Kocka"></div>
+<div class="product-info"><h3>Végtelen Kocka</h3><span class="product-price">800 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="slinky">
+<div class="product-image"><img src="images/slinky1.jpg" alt="Slinky"></div>
+<div class="product-info"><h3>Slinky</h3><span class="product-price">3000 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="sectioned-cube">
+<div class="product-image"><img src="images/liquid_cube1.jpg" alt="Liquid Cube"></div>
+<div class="product-info"><h3>Liquid Cube</h3><span class="product-price">3000 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="liquid-ball">
+<div class="product-image"><img src="images/liquidball2.jpg" alt="Liquid Ball"></div>
+<div class="product-info"><h3>Liquid Ball</h3><span class="product-price">2000 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="hand-roller">
+<div class="product-image"><img src="images/handroller1.jpg" alt="Hand Roller"></div>
+<div class="product-info"><h3>Hand Roller</h3><span class="product-price">1000 Ft / db</span></div>
+</div>
+<!-- Új termékek -->
+<div class="product-card" data-product="twist-fidget">
+<div class="product-image"><img src="images/twist_fidget_1.jpg" alt="Twist Fidget"></div>
+<div class="product-info"><h3>Twist Fidget</h3><span class="product-price">1000 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="transforming-ball">
+<div class="product-image"><img src="images/Transforming_Fidget_Ball_1.jpg" alt="Transforming Fidget Ball"></div>
+<div class="product-info"><h3>Transforming Fidget Ball</h3><span class="product-price">2500 Ft / db</span></div>
+</div>
+<div class="product-card" data-product="honeycomb-hexagon">
+<div class="product-image"><img src="images/Honeycomb_Hexagon_1.jpg" alt="Honeycomb Hexagon"></div>
+<div class="product-info"><h3>Honeycomb Hexagon</h3><span class="product-price">750 Ft / db</span></div>
+</div>
+</div>
+</div>
+</section>
+<section id="colors" class="colors-section">
+<div class="container">
+<h2 class="section-title">Elérhető Színek</h2>
+<p class="section-subtitle">Válaszd ki a kedvencedet! A termékek az alábbi színekből kérhetőek. A színek folyamatosan frissülnek.</p>
+<div class="colors-grid" id="colorsGrid"> <!-- Colors injected by script.js --> </div>
+</div>
+</section>
+<section id="lithophanes" class="products" style="background-color: var(--light-bg);">
+<div class="container">
+<h2 class="section-title">Litofánok</h2>
+<div class="products-grid">
+<div class="product-card" data-product="litho-plane">
+<div class="product-image" style="padding:0;overflow:hidden;">
+<div class="litho-card-viewer" id="card-viewer-plane" data-model="Plane.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
+</div>
+<div class="product-info"><h3>Litofán Sík</h3><span class="product-price">Egyedi árazás</span><p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Hossz: 100mm - 200mm</p></div>
+</div>
+<div class="product-card" data-product="litho-arc">
+<div class="product-image" style="padding:0;overflow:hidden;">
+<div class="litho-card-viewer" id="card-viewer-arc" data-model="Arc.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
+</div>
+<div class="product-info"><h3>Litofán Ív</h3><span class="product-price">Egyedi árazás</span><p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Hossz: 100mm - 200mm</p></div>
+</div>
+<div class="product-card" data-product="litho-cylinder">
+<div class="product-image" style="padding:0;overflow:hidden;">
+<div class="litho-card-viewer" id="card-viewer-cylinder" data-model="Cylinder.stl" style="width:100%;height:200px;background:#18181b;border-radius:12px 12px 0 0;"></div>
+</div>
+<div class="product-info"><h3>Litofán Henger</h3><span class="product-price">Egyedi árazás</span><p class="product-size" style="font-size: 0.85em; color: #666; margin-top: 5px;">Átmérő: 75mm - 150mm</p></div>
+</div>
+</div>
+</div>
+</section>
+<section id="contact" class="contact">
+<div class="container">
+<h2 class="section-title">Rendelés és Kapcsolat</h2>
+<p class="section-subtitle">Az alábbi űrlapon adhatod le a megrendelésedet és itt tudsz érdeklődni az egyedi termékekről is.</p>
+<div class="contact-wrapper">
+<form id="contactForm" class="contact-form">
+<div class="form-group"><label for="name">Név *</label><input type="text" id="name" name="name" required></div>
+<div class="form-group"><label for="email">Email cím *</label><input type="email" id="email" name="email" required></div>
+<div class="form-group"><label for="message">Üzenet / Rendelési részletek *</label><textarea id="message" name="message" rows="5" required placeholder="Írd meg melyik terméket, milyen színben és hány darabot szeretnél!"></textarea></div>
+<button type="submit" class="btn-primary">Üzenet küldése</button>
+<div id="formMessage" class="form-message"></div>
+</form>
+</div>
+</div>
+</section>
+<footer>
+<div class="container"><p>&copy; 2024 Fidget Piac. Minden jog fenntartva.</p></div>
+</footer>
+<!-- Product Modal -->
+<div id="productModal" class="modal">
+<div class="modal-content">
+<span class="modal-close">&times;</span>
+<div class="modal-body">
+<div class="modal-images">
+<div class="view-controls" style="display: flex; gap: 10px; margin-bottom: 10px; justify-content: center;">
+<button id="btn-view-photo" class="btn-toggle active" style="padding: 5px 15px; border-radius: 15px; border: 1px solid #6366f1; background: #6366f1; color: white; cursor: pointer;">📷 Fotó</button>
+<button id="btn-view-3d" class="btn-toggle" style="padding: 5px 15px; border-radius: 15px; border: 1px solid #ccc; background: white; cursor: pointer;">🧊 3D Nézet</button>
+</div>
+<div class="modal-main-image" id="modal-photo-container"><div class="placeholder-image-large">🖼️</div></div>
+<div id="modal-3d-container" style="width: 100%; height: 400px; display: none; border-radius: 15px; overflow: hidden; position: relative;"></div>
+<div id="color-selection-container" style="display: none; margin-top: 1rem;"> <!-- Color swatches will be injected here --> </div>
+<div class="modal-thumbnails"> <!-- Thumbnails will be injected here --> </div>
+</div>
+<div class="modal-info"><h2 id="modal-title"></h2><div id="modal-description" style="margin-top: 15px; margin-bottom: 20px; line-height: 1.5; color: #333; font-size: 0.95em;"></div><div class="modal-cta"><a href="#contact" class="btn-primary">Rendelés</a></div></div>
+</div>
+</div>
+</div>
+<!-- Three.js for 3D Viewer -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<!-- 3MF Support -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
+<!-- Custom Scripts -->
+<script src="viewer.js?v=4"></script>
+<script src="script.js?v=9"></script>
 </body>
-
 </html>
