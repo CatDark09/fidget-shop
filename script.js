@@ -266,23 +266,26 @@ const productData = {
         images: ['handroller1.jpg', 'handroller2.jpg'],
         modelFile: ''
     },
+    // Új termékek – leírás eltávolítva
     'twist-fidget': {
         title: 'Twist Fidget',
         images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
-        description: 'Egy különleges, csavarható fidget játék.'
+        modelFile: '',
+        description: ''
     },
     'transforming-ball': {
         title: 'Transforming Fidget Ball',
         images: ['Transforming_Fidget_Ball_1.jpg', 'Transforming_Fidget_Ball_2.jpg'],
         modelFile: 'Transforming_Fidget_Ball_Micro.3mf',
-        description: 'Alakítható, szétnyitható fidget gömb.'
+        description: ''
     },
     'honeycomb-hexagon': {
         title: 'Honeycomb Hexagon',
         images: ['Honeycomb_Hexagon_1.jpg', 'Honeycomb_Hexagon_2.jpg'],
         modelFile: 'Honeycomb_Fidget.3mf',
-        description: 'Méhsejt mintázatú hexagonális fidget.'
+        description: ''
     },
+    // Litofánok – csak 3D modell, nincs kép
     'litho-plane': {
         title: 'Litofán Sík',
         images: [],
@@ -308,78 +311,131 @@ document.querySelectorAll('.product-card').forEach(card => {
         try {
             const productId = this.getAttribute('data-product');
             const product = productData[productId];
-            if (product) {
-                modalTitle.textContent = product.title;
-                const modalDesc = document.getElementById('modal-description');
-                if (modalDesc) {
-                    modalDesc.innerHTML = product.description || '';
-                    modalDesc.style.display = 'block';
-                }
-                const mainImageContainer = document.getElementById('modal-photo-container');
-                const thumbnailsContainer = document.querySelector('.modal-thumbnails');
-                const viewControls = document.querySelector('.view-controls');
-                const btnPhoto = document.getElementById('btn-view-photo');
-                const btn3d = document.getElementById('btn-view-3d');
-                const container3d = document.getElementById('modal-3d-container');
-                if (!mainImageContainer || !thumbnailsContainer) return;
-                mainImageContainer.innerHTML = '';
-                thumbnailsContainer.innerHTML = '';
-                mainImageContainer.style.display = 'flex';
-                if (container3d) container3d.style.display = 'none';
-                if (btnPhoto) {
-                    btnPhoto.classList.add('active');
-                    btnPhoto.style.background = '#6366f1';
-                    btnPhoto.style.color = 'white';
-                }
-                if (btn3d) {
-                    btn3d.classList.remove('active');
-                    btn3d.style.background = 'white';
-                    btn3d.style.color = 'black';
-                }
-                if (product.modelFile && viewControls && btn3d && container3d) {
-                    viewControls.style.display = 'flex';
-                    btn3d.onclick = () => {
-                        mainImageContainer.style.display = 'none';
-                        container3d.style.display = 'block';
-                        btn3d.classList.add('active');
-                        btnPhoto.classList.remove('active');
-                        btn3d.style.background = '#6366f1';
-                        btn3d.style.color = 'white';
-                        btnPhoto.style.background = 'white';
-                        btnPhoto.style.color = 'black';
-                        if (!fidgetViewer) {
-                            const ViewerClass = window.FidgetViewer || FidgetViewer;
-                            fidgetViewer = new ViewerClass('modal-3d-container');
-                        }
-                        fidgetViewer.loadModel(product.modelFile);
-                        fidgetViewer.start();
-                        fidgetViewer.onResize();
-                        const colorSelection = document.getElementById('color-selection-container');
-                        if (colorSelection) {
-                            colorSelection.innerHTML = '';
-                            colorSelection.style.display = 'flex';
-                            colorSelection.style.flexWrap = 'wrap';
-                            colorSelection.style.gap = '10px';
-                            colorSelection.style.justifyContent = 'center';
-                            colorSelection.style.marginTop = '15px';
-                            filaments.filter(f => f.type === 'standard').forEach(f => {
-                                const swatch = document.createElement('div');
-                                swatch.style.width = '30px';
-                                swatch.style.height = '30px';
-                                swatch.style.borderRadius = '50%';
-                                swatch.style.border = '2px solid #ddd';
-                                swatch.style.cursor = 'pointer';
-                                swatch.style.backgroundColor = f.color;
-                                swatch.title = f.name;
-                                swatch.addEventListener('click', () => {
-                                    Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
-                                    swatch.style.borderColor = '#6366f1';
-                                    if (fidgetViewer) fidgetViewer.setMaterial({ color: f.color, type: f.type });
-                                });
-                                colorSelection.appendChild(swatch);
+            if (!product) return;
+
+            modalTitle.textContent = product.title;
+
+            const modalDesc = document.getElementById('modal-description');
+            if (modalDesc) {
+                modalDesc.innerHTML = product.description || '';
+                modalDesc.style.display = product.description ? 'block' : 'none';
+            }
+
+            const mainImageContainer = document.getElementById('modal-photo-container');
+            const thumbnailsContainer = document.querySelector('.modal-thumbnails');
+            const viewControls = document.querySelector('.view-controls');
+            const btnPhoto = document.getElementById('btn-view-photo');
+            const btn3d = document.getElementById('btn-view-3d');
+            const container3d = document.getElementById('modal-3d-container');
+
+            if (!mainImageContainer || !thumbnailsContainer) return;
+
+            // Reset UI
+            mainImageContainer.innerHTML = '';
+            thumbnailsContainer.innerHTML = '';
+            mainImageContainer.style.display = 'flex';
+            if (container3d) container3d.style.display = 'none';
+            if (btnPhoto) {
+                btnPhoto.classList.add('active');
+                btnPhoto.style.background = '#6366f1';
+                btnPhoto.style.color = 'white';
+            }
+            if (btn3d) {
+                btn3d.classList.remove('active');
+                btn3d.style.background = 'white';
+                btn3d.style.color = 'black';
+            }
+
+            // Determine if we have images
+            const hasImages = product.images && product.images.length > 0;
+
+            // Show/hide view controls based on availability of 3D model
+            if (product.modelFile) {
+                viewControls.style.display = 'flex';
+                // Photo button always visible when images exist, otherwise hide it
+                btnPhoto.style.display = hasImages ? 'inline-block' : 'none';
+                btn3d.style.display = 'inline-block';
+            } else {
+                viewControls.style.display = 'none';
+            }
+
+            // Photo view setup
+            if (hasImages) {
+                const mainImg = document.createElement('img');
+                mainImg.src = `images/${product.images[0]}`;
+                mainImg.alt = product.title;
+                mainImageContainer.appendChild(mainImg);
+
+                // Thumbnails for additional images
+                product.images.slice(1).forEach((imgSrc, idx) => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'thumbnail';
+                    const thumbImg = document.createElement('img');
+                    thumbImg.src = `images/${imgSrc}`;
+                    thumbImg.alt = `${product.title} extra`;
+                    thumb.appendChild(thumbImg);
+                    thumb.addEventListener('click', () => {
+                        mainImg.src = `images/${imgSrc}`;
+                        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                    });
+                    thumbnailsContainer.appendChild(thumb);
+                });
+            } else {
+                // Nincs kép – placeholder
+                mainImageContainer.innerHTML = '<div class="placeholder-image-large" style="display:flex;justify-content:center;align-items:center;width:100%;height:100%;font-size:5rem;background:#eee;">🧊</div>';
+                btnPhoto.style.display = 'none';
+            }
+
+            // 3D view button handler
+            if (product.modelFile && btn3d) {
+                btn3d.onclick = () => {
+                    mainImageContainer.style.display = 'none';
+                    container3d.style.display = 'block';
+                    btn3d.classList.add('active');
+                    btnPhoto.classList.remove('active');
+                    btn3d.style.background = '#6366f1';
+                    btn3d.style.color = 'white';
+                    btnPhoto.style.background = 'white';
+                    btnPhoto.style.color = 'black';
+
+                    if (!fidgetViewer) {
+                        const ViewerClass = window.FidgetViewer || FidgetViewer;
+                        fidgetViewer = new ViewerClass('modal-3d-container');
+                    }
+                    fidgetViewer.loadModel(product.modelFile);
+                    fidgetViewer.start();
+                    fidgetViewer.onResize();
+
+                    // Color selector only for standard filaments
+                    const colorSelection = document.getElementById('color-selection-container');
+                    if (colorSelection) {
+                        colorSelection.innerHTML = '';
+                        colorSelection.style.display = 'flex';
+                        colorSelection.style.flexWrap = 'wrap';
+                        colorSelection.style.gap = '10px';
+                        colorSelection.style.justifyContent = 'center';
+                        colorSelection.style.marginTop = '15px';
+                        filaments.filter(f => f.type === 'standard').forEach(f => {
+                            const swatch = document.createElement('div');
+                            swatch.style.width = '30px';
+                            swatch.style.height = '30px';
+                            swatch.style.borderRadius = '50%';
+                            swatch.style.border = '2px solid #ddd';
+                            swatch.style.cursor = 'pointer';
+                            swatch.style.backgroundColor = f.color;
+                            swatch.title = f.name;
+                            swatch.addEventListener('click', () => {
+                                Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
+                                swatch.style.borderColor = '#6366f1';
+                                if (fidgetViewer) fidgetViewer.setMaterial({ color: f.color, type: f.type });
                             });
-                        }
-                    };
+                            colorSelection.appendChild(swatch);
+                        });
+                    }
+                };
+                // Photo button handler (if images exist)
+                if (hasImages && btnPhoto) {
                     btnPhoto.onclick = () => {
                         mainImageContainer.style.display = 'flex';
                         container3d.style.display = 'none';
@@ -392,36 +448,15 @@ document.querySelectorAll('.product-card').forEach(card => {
                         const colorSelection = document.getElementById('color-selection-container');
                         if (colorSelection) colorSelection.style.display = 'none';
                     };
-                } else {
-                    viewControls.style.display = 'none';
                 }
-                if (product.images && product.images.length > 0) {
-                    const mainImg = document.createElement('img');
-                    mainImg.src = `images/${product.images[0]}`;
-                    mainImg.alt = product.title;
-                    mainImageContainer.appendChild(mainImg);
-                    product.images.slice(1).forEach(imgSrc => {
-                        const thumb = document.createElement('div');
-                        thumb.className = 'thumbnail';
-                        const thumbImg = document.createElement('img');
-                        thumbImg.src = `images/${imgSrc}`;
-                        thumbImg.alt = `${product.title} extra`;
-                        thumb.appendChild(thumbImg);
-                        thumb.addEventListener('click', () => {
-                            mainImg.src = `images/${imgSrc}`;
-                            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                            thumb.classList.add('active');
-                        });
-                        thumbnailsContainer.appendChild(thumb);
-                    });
-                } else {
-                    mainImageContainer.innerHTML = '<div class="placeholder-image-large" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; font-size: 5rem; background: #eee;">🧊</div>';
-                }
-                modal.classList.add('show');
-                document.body.style.overflow = 'hidden';
-                if ((!product.images || product.images.length === 0) && product.modelFile) {
-                    if (btn3d && btn3d.onclick) btn3d.onclick();
-                }
+            }
+
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Ha nincs kép, de van 3D modell, automatikusan nyissuk meg a 3D nézetet
+            if (!hasImages && product.modelFile && btn3d && btn3d.onclick) {
+                btn3d.onclick();
             }
         } catch (error) {
             console.error("Modal error:", error);
