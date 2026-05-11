@@ -97,106 +97,6 @@ const filaments = [
     { name: 'Világoskék', color: '#add8e6', type: 'standard' },
     { name: 'Fekete-Rózsaszín Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)', type: 'silk' },
     { name: 'Rózsaszín-Zöld Duál', color: '#ff69b4', rainbow: 'linear-gradient(135deg, #ff69b4 0%, #22c55e 100%)', type: 'silk' },
-    { name: 'Rózs<dyad-write path="script.js" description="Új színek hozzáadása és a script.js fájl befejezése">
-// FidgetViewer is loaded globally from viewer.js
-
-// Mini 3D card viewers for lithophane section
-let cardViewers = [];
-
-function initLithoCardViewers() {
-    if (typeof window.THREE === 'undefined') {
-        console.warn('[Shop] THREE.js not available yet');
-        return false;
-    }
-    if (typeof FidgetViewer === 'undefined' && typeof window.FidgetViewer === 'undefined') {
-        console.warn('[Shop] FidgetViewer class not available yet');
-        return false;
-    }
-    
-    // Ensure we use the global version from window if local lookup fails
-    const ViewerClass = window.FidgetViewer || FidgetViewer;
-    console.log('[Shop] Initializing 3D Card Viewers...');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const container = entry.target;
-            const modelFile = container.getAttribute('data-model');
-            
-            if (entry.isIntersecting) {
-                // Initialize if not already done
-                if (!container.viewer) {
-                    const ViewerClass = window.FidgetViewer || FidgetViewer;
-                    const viewer = new ViewerClass(container.id);
-                    container.viewer = viewer;
-                    viewer.loadModel(modelFile);
-                    // Cards should not auto-rotate at all based on user request
-                    viewer.stop(); // Init static
-                    cardViewers.push(viewer);
-
-                    // Start animation ONLY when hovering or when visible if preferred, 
-                    // but user said "only when they want to move it".
-                    // So we start the loop but autoRotate is false.
-                    // Actually, to save battery, we only 'start' the loop when mouse enters.
-                    container.addEventListener('mouseenter', () => viewer.start());
-                    container.addEventListener('mouseleave', () => viewer.stop());
-                } else {
-                    // Resume if needed, or keep static
-                }
-            } else {
-                // Out of view, stop the loop to save resources
-                if (container.viewer) {
-                    container.viewer.stop();
-                }
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.litho-card-viewer').forEach(container => {
-        observer.observe(container);
-    });
-}
-
-// Robust initialization with retries
-function startApp() {
-    let attempts = 0;
-    const maxAttempts = 20; // Try for 10 seconds
-
-    const checkAndInit = () => {
-        attempts++;
-        if (initLithoCardViewers()) {
-            console.log('[Shop] 3D Viewers initialized successfully');
-            return;
-        }
-
-        if (attempts < maxAttempts) {
-            setTimeout(checkAndInit, 500);
-        } else {
-            console.error('[Shop] Failed to initialize 3D viewers after 10 seconds. Check console for script errors.');
-        }
-    };
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', checkAndInit);
-    } else {
-        checkAndInit();
-    }
-}
-
-startApp();
-
-
-// Filament Palette
-const filaments = [
-    { name: 'Piros', color: '#ef4444', type: 'standard' },
-    { name: 'Zöld', color: '#22c55e', type: 'standard' },
-    { name: 'Sárga', color: '#eab308', type: 'standard' },
-    { name: 'Kék', color: '#3b82f6', type: 'standard' },
-    { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
-    { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
-    { name: 'Arany-Zöld Duál', color: '#ffd700', rainbow: 'linear-gradient(135deg, #ffd700 0%, #22c55e 100%)', type: 'silk' },
-    { name: 'Világoskék', color: '#add8e6', type: 'standard' },
-    { name: 'Fekete-Rózsaszín Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)', type: 'silk' },
-    { name: 'Rózsaszín-Zöld Duál', color: '#ff69b4', rainbow: 'linear-gradient(135deg, #ff69b4 0%, #22c55e 100%)', type: 'silk' },
     { name: 'Rózsaszín', color: '#ff69b4', type: 'standard' }
 ];
 
@@ -256,19 +156,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Contact form handler - Netlify Functions
 // Contact form handler
 document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contactForm');
     const formMessage = document.getElementById('formMessage');
 
-    console.log("Script loaded, looking for contactForm..."); // Debug
-
     if (contactForm) {
-        console.log("Contact form found!"); // Debug
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            console.log("Form submission intercepted"); // Debug
 
             const submitButton = contactForm.querySelector('button[type="submit"]');
             const originalButtonText = submitButton.textContent;
@@ -312,8 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     submitButton.disabled = false;
                 });
         });
-    } else {
-        console.error("Contact form NOT found in DOM"); // Debug
     }
 });
 
@@ -435,6 +328,23 @@ const productData = {
         images: ['handroller1.jpg', 'handroller2.jpg'],
         modelFile: ''
     },
+    'twist-fidget': {
+        title: 'Twist Fidget',
+        images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
+        description: 'Egy különleges, csavarható fidget játék.'
+    },
+    'transforming-ball': {
+        title: 'Transforming Fidget Ball',
+        images: ['transforming_ball_1.jpg', 'transforming_ball_2.jpg'],
+        modelFile: 'Transforming_Fidget_Ball_Micro.3mf',
+        description: 'Alakítható, szétnyitható fidget gömb.'
+    },
+    'honeycomb-hexagon': {
+        title: 'Honeycomb Hexagon',
+        images: ['honeycomb_hexagon_1.jpg', 'honeycomb_hexagon_2.jpg'],
+        modelFile: 'Honeycomb_Fidget.3mf',
+        description: 'Méhsejt mintázatú hexagonális fidget.'
+    },
     'litho-plane': {
         title: 'Litofán Sík',
         images: [],
@@ -468,7 +378,6 @@ document.querySelectorAll('.product-card').forEach(card => {
                 const modalDesc = document.getElementById('modal-description');
                 if (modalDesc) {
                     if (product.description) {
-                        // Allow HTML in description like <br> for line breaks
                         modalDesc.innerHTML = product.description;
                         modalDesc.style.display = 'block';
                     } else {
@@ -483,149 +392,94 @@ document.querySelectorAll('.product-card').forEach(card => {
                 const btn3d = document.getElementById('btn-view-3d');
                 const container3d = document.getElementById('modal-3d-container');
 
-                if (!mainImageContainer || !thumbnailsContainer) {
-                    console.error("Critical modal elements missing");
-                    return;
-                }
+                if (!mainImageContainer || !thumbnailsContainer) return;
 
-                // Reset UI state
                 mainImageContainer.innerHTML = '';
                 thumbnailsContainer.innerHTML = '';
                 mainImageContainer.style.display = 'flex';
-
                 if (container3d) container3d.style.display = 'none';
 
                 if (btnPhoto) {
                     btnPhoto.classList.add('active');
                     btnPhoto.style.background = '#6366f1';
                     btnPhoto.style.color = 'white';
-                    btnPhoto.style.borderColor = '#6366f1';
                 }
-
                 if (btn3d) {
                     btn3d.classList.remove('active');
                     btn3d.style.background = 'white';
                     btn3d.style.color = 'black';
-                    btn3d.style.borderColor = '#ccc';
                 }
 
-                // Show/Hide 3D Button based on model availability
                 if (product.modelFile && viewControls && btn3d && container3d) {
                     viewControls.style.display = 'flex';
-
-                    // Setup 3D Button Click
                     btn3d.onclick = () => {
                         mainImageContainer.style.display = 'none';
                         container3d.style.display = 'block';
                         btn3d.classList.add('active');
                         btnPhoto.classList.remove('active');
-
-                        // Style updates
                         btn3d.style.background = '#6366f1';
                         btn3d.style.color = 'white';
-                        btn3d.style.borderColor = '#6366f1';
                         btnPhoto.style.background = 'white';
                         btnPhoto.style.color = 'black';
-                        btnPhoto.style.borderColor = '#ccc';
 
-                        // Initialize Viewer
                         if (!fidgetViewer) {
                             const ViewerClass = window.FidgetViewer || FidgetViewer;
                             fidgetViewer = new ViewerClass('modal-3d-container');
                         }
                         fidgetViewer.loadModel(product.modelFile);
-                        fidgetViewer.start(); // RESTART THE LOOP!
-                        fidgetViewer.onResize(); // Force resize check
+                        fidgetViewer.start();
+                        fidgetViewer.onResize();
 
-                        // Inject Color Selection for 3D Viewer (Standard Colors Only)
                         const colorSelection = document.getElementById('color-selection-container');
                         if (colorSelection) {
-                            if (productId.startsWith('litho-')) {
-                                colorSelection.style.display = 'none';
-                                colorSelection.innerHTML = '';
-                            } else {
-                                colorSelection.innerHTML = '';
-                                colorSelection.style.display = 'flex';
-                                colorSelection.style.flexWrap = 'wrap';
-                                colorSelection.style.gap = '10px';
-                                colorSelection.style.justifyContent = 'center';
-                                colorSelection.style.marginTop = '15px';
+                            colorSelection.innerHTML = '';
+                            colorSelection.style.display = 'flex';
+                            colorSelection.style.flexWrap = 'wrap';
+                            colorSelection.style.gap = '10px';
+                            colorSelection.style.justifyContent = 'center';
+                            colorSelection.style.marginTop = '15px';
 
-                                // Filter for standard colors only
-                                const standardColors = filaments.filter(f => f.type === 'standard');
-
-                                standardColors.forEach(f => {
-                                    const swatch = document.createElement('div');
-                                    swatch.style.width = '30px';
-                                    swatch.style.height = '30px';
-                                    swatch.style.borderRadius = '50%';
-                                    swatch.style.border = '2px solid #ddd';
-                                    swatch.style.cursor = 'pointer';
-                                    swatch.style.backgroundColor = f.color;
-                                    swatch.title = f.name;
-
-                                    swatch.addEventListener('click', () => {
-                                        // Highlight selected
-                                        Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
-                                        swatch.style.borderColor = '#6366f1';
-
-                                        // Set color in viewer
-                                        if (fidgetViewer) {
-                                            fidgetViewer.setMaterial({
-                                                color: f.color,
-                                                type: f.type
-                                            });
-                                        }
-                                    });
-
-                                    colorSelection.appendChild(swatch);
+                            filaments.filter(f => f.type === 'standard').forEach(f => {
+                                const swatch = document.createElement('div');
+                                swatch.style.width = '30px';
+                                swatch.style.height = '30px';
+                                swatch.style.borderRadius = '50%';
+                                swatch.style.border = '2px solid #ddd';
+                                swatch.style.cursor = 'pointer';
+                                swatch.style.backgroundColor = f.color;
+                                swatch.title = f.name;
+                                swatch.addEventListener('click', () => {
+                                    Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
+                                    swatch.style.borderColor = '#6366f1';
+                                    if (fidgetViewer) fidgetViewer.setMaterial({ color: f.color, type: f.type });
                                 });
-
-                                // Add disclaimer text
-                                const disclaimer = document.createElement('p');
-                                disclaimer.textContent = '(A színek a valóságban eltérhetnek)';
-                                disclaimer.style.width = '100%';
-                                disclaimer.style.textAlign = 'center';
-                                disclaimer.style.marginTop = '10px';
-                                disclaimer.style.fontSize = '0.9em';
-                                disclaimer.style.color = '#666';
-                                colorSelection.appendChild(disclaimer);
-                            }
+                                colorSelection.appendChild(swatch);
+                            });
                         }
                     };
 
-                    // Setup Photo Button Click
                     btnPhoto.onclick = () => {
                         mainImageContainer.style.display = 'flex';
                         container3d.style.display = 'none';
                         btnPhoto.classList.add('active');
                         btn3d.classList.remove('active');
-
-                        // Style updates
                         btnPhoto.style.background = '#6366f1';
                         btnPhoto.style.color = 'white';
-                        btnPhoto.style.borderColor = '#6366f1';
                         btn3d.style.background = 'white';
                         btn3d.style.color = 'black';
-                        btn3d.style.borderColor = '#ccc';
-
-                        // Hide color selection in photo mode
                         const colorSelection = document.getElementById('color-selection-container');
                         if (colorSelection) colorSelection.style.display = 'none';
                     };
-
                 } else {
                     viewControls.style.display = 'none';
                 }
 
                 if (product.images && product.images.length > 0) {
-                    // Main image
                     const mainImg = document.createElement('img');
                     mainImg.src = `images/${product.images[0]}`;
                     mainImg.alt = product.title;
                     mainImageContainer.appendChild(mainImg);
 
-                    // Thumbnails
                     product.images.forEach((imgSrc, index) => {
                         const thumb = document.createElement('div');
                         thumb.className = `thumbnail ${index === 0 ? 'active' : ''}`;
@@ -633,12 +487,10 @@ document.querySelectorAll('.product-card').forEach(card => {
                         thumbImg.src = `images/${imgSrc}`;
                         thumbImg.alt = `${product.title} ${index + 1}`;
                         thumb.appendChild(thumbImg);
-
                         thumb.addEventListener('click', () => {
                             mainImg.src = `images/${imgSrc}`;
                             document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
                             thumb.classList.add('active');
-                            // Switch to photo view if in 3D
                             if (btnPhoto.onclick) btnPhoto.onclick();
                         });
                         thumbnailsContainer.appendChild(thumb);
@@ -647,58 +499,33 @@ document.querySelectorAll('.product-card').forEach(card => {
                     mainImageContainer.innerHTML = '<div class="placeholder-image-large" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; font-size: 5rem; background: #eee;">🧊</div>';
                 }
 
-                // Show modal
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
 
-                // Ha nincs kép, de van 3D modell, automatikusan a 3D nézet nyíljon meg
                 if ((!product.images || product.images.length === 0) && product.modelFile) {
-                    if (btn3d && btn3d.onclick) {
-                        btn3d.onclick();
-                    }
+                    if (btn3d && btn3d.onclick) btn3d.onclick();
                 }
             }
         } catch (error) {
             console.error("Modal error:", error);
-            alert("Hiba történt a megnyitáskor: " + error.message);
         }
     });
 });
 
-// Close modal
 function closeModalHandler() {
     modal.classList.remove('show');
     document.body.style.overflow = 'auto';
-    
-    // Stop 3D viewer animation loop to save resources and WebGL contexts
-    if (fidgetViewer) {
-        fidgetViewer.stop();
-    }
+    if (fidgetViewer) fidgetViewer.stop();
 }
 
 closeModal.addEventListener('click', closeModalHandler);
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModalHandler(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('show')) closeModalHandler(); });
 
-// Close modal when clicking outside
-modal.addEventListener('click', function (e) {
-    if (e.target === modal) {
-        closeModalHandler();
-    }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modal.classList.contains('show')) {
-        closeModalHandler();
-    }
-});
-
-// Handle order button click in modal
-document.addEventListener('click', function (e) {
+document.addEventListener('click', (e) => {
     if (e.target.closest('.modal-cta .btn-primary')) {
         e.preventDefault();
         closeModalHandler();
-
-        // Scroll to contact section
         const contactSection = document.getElementById('contact');
         if (contactSection) {
             setTimeout(() => {

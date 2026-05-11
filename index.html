@@ -197,6 +197,37 @@
                             <span class="product-price">1000 Ft / db</span>
                         </div>
                     </div>
+
+                    <!-- Új termékek -->
+                    <div class="product-card" data-product="twist-fidget">
+                        <div class="product-image">
+                            <img src="images/twist_fidget_1.jpg" alt="Twist Fidget">
+                        </div>
+                        <div class="product-info">
+                            <h3>Twist Fidget</h3>
+                            <span class="product-price">1000 Ft / db</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-product="transforming-ball">
+                        <div class="product-image">
+                            <img src="images/transforming_ball_1.jpg" alt="Transforming Fidget Ball">
+                        </div>
+                        <div class="product-info">
+                            <h3>Transforming Fidget Ball</h3>
+                            <span class="product-price">2500 Ft / db</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-product="honeycomb-hexagon">
+                        <div class="product-image">
+                            <img src="images/honeycomb_hexagon_1.jpg" alt="Honeycomb Hexagon">
+                        </div>
+                        <div class="product-info">
+                            <h3>Honeycomb Hexagon</h3>
+                            <span class="product-price">750 Ft / db</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -259,21 +290,21 @@
                     <form id="contactForm" class="contact-form">
                         <div class="form-group">
                             <label for="name">Név *</label>
-                            <input type="text" id="name" name="name" required disabled>
+                            <input type="text" id="name" name="name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email cím *</label>
-                            <input type="email" id="email" name="email" required disabled>
+                            <input type="email" id="email" name="email" required>
                         </div>
 
                         <div class="form-group">
                             <label for="message">Üzenet / Rendelési részletek *</label>
-                            <textarea id="message" name="message" rows="5" required disabled
-                                placeholder="Jelenleg az e-mail küldés nem működik. Hamarosan elérhető lesz."></textarea>
+                            <textarea id="message" name="message" rows="5" required
+                                placeholder="Írd meg melyik terméket, milyen színben és hány darabot szeretnél!"></textarea>
                         </div>
 
-                        <button type="button" class="btn-primary" disabled style="background-color: #999; border-color: #999; cursor: not-allowed; color: white;">Hamarosan elérhető lesz</button>
+                        <button type="submit" class="btn-primary">Üzenet küldése</button>
                         <div id="formMessage" class="form-message"></div>
                     </form>
                 </div>
@@ -283,6 +314,7 @@
 
     <footer>
         <div class="container">
+            <p>&copy; 2024 Fidget Piac. Minden jog fenntartva.</p>
         </div>
     </footer>
 
@@ -329,14 +361,17 @@
         </div>
     </div>
 
-    <!-- Three.js for 3D Viewer (Global/UMD for local file support) -->
+    <!-- Three.js for 3D Viewer -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- 3MF Support -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/3MFLoader.js"></script>
 
-    <!-- Custom Scripts with versioning to bypass potential CDN/Proxy cache -->
+    <!-- Custom Scripts -->
     <script src="viewer.js?v=4"></script>
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=9"></script>
 </body>
 
 </html>
