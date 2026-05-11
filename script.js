@@ -118,43 +118,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            const submitButton = contactForm.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
-            submitButton.textContent = 'Küldés...';
-            submitButton.disabled = true;
-            formMessage.style.display = 'none';
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value
-            };
-            fetch('/send-email', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => { throw new Error(text) });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    formMessage.className = 'form-message success';
-                    formMessage.textContent = 'Köszönjük az üzeneted! Hamarosan válaszolunk.';
-                    formMessage.style.display = 'block';
-                    contactForm.reset();
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Hiba:', error);
-                    formMessage.className = 'form-message error';
-                    formMessage.textContent = 'Hiba történt a küldéskor. (' + error.message + ')';
-                    formMessage.style.display = 'block';
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                });
+            formMessage.className = 'form-message info';
+            formMessage.textContent = 'Hamarosan elérhető lesz.';
+            formMessage.style.display = 'block';
         });
     }
 });
@@ -269,7 +235,7 @@ const productData = {
     // Új termékek – leírás eltávolítva
     'twist-fidget': {
         title: 'Twist Fidget',
-        images: ['twist_fidget_1.jpg', 'twist_fidget_2.jpg'],
+        images: ['twist_fidget_1.jpg'],
         modelFile: '',
         description: ''
     },
@@ -285,23 +251,26 @@ const productData = {
         modelFile: 'Honeycomb_Fidget.3mf',
         description: ''
     },
-    // Litofánok – csak 3D modell, nincs kép
+    // Litofánok – csak 3D modell, nincs kép, nincs színválasztó (csak fehér)
     'litho-plane': {
         title: 'Litofán Sík',
         images: [],
         modelFile: 'Plane.stl',
+        noColors: true,
         description: '<strong>Rendelés:</strong> Csak a hosszt kell megadni, meg a hátulján lévő tartóhoz az átmérőt.<br><strong>Méret:</strong> Min.: 100mm, Max.: 200mm'
     },
     'litho-arc': {
         title: 'Litofán Ív',
         images: [],
         modelFile: 'Arc.stl',
+        noColors: true,
         description: '<strong>Rendelés:</strong> Csak a hosszt kell megadni, meg a hátulján lévő tartóhoz az átmérőt.<br><strong>Méret:</strong> Min.: 100mm, Max.: 200mm'
     },
     'litho-cylinder': {
         title: 'Litofán Henger',
         images: [],
         modelFile: 'Cylinder.stl',
+        noColors: true,
         description: '<strong>Rendelés:</strong> Csak átmérőt kell megadni.<br><strong>Méret:</strong> Min.: 75mm, Max.: 150mm'
     }
 };
@@ -335,6 +304,12 @@ document.querySelectorAll('.product-card').forEach(card => {
             thumbnailsContainer.innerHTML = '';
             mainImageContainer.style.display = 'flex';
             if (container3d) container3d.style.display = 'none';
+            // Hide color selector by default; only the 3D view handler may show it
+            const colorSelectionReset = document.getElementById('color-selection-container');
+            if (colorSelectionReset) {
+                colorSelectionReset.style.display = 'none';
+                colorSelectionReset.innerHTML = '';
+            }
             if (btnPhoto) {
                 btnPhoto.classList.add('active');
                 btnPhoto.style.background = '#6366f1';
@@ -366,13 +341,13 @@ document.querySelectorAll('.product-card').forEach(card => {
                 mainImg.alt = product.title;
                 mainImageContainer.appendChild(mainImg);
 
-                // Thumbnails for additional images
-                product.images.slice(1).forEach((imgSrc, idx) => {
+                // Thumbnails for ALL images (including the first one, marked active)
+                product.images.forEach((imgSrc, idx) => {
                     const thumb = document.createElement('div');
-                    thumb.className = 'thumbnail';
+                    thumb.className = 'thumbnail' + (idx === 0 ? ' active' : '');
                     const thumbImg = document.createElement('img');
                     thumbImg.src = `images/${imgSrc}`;
-                    thumbImg.alt = `${product.title} extra`;
+                    thumbImg.alt = `${product.title} ${idx + 1}`;
                     thumb.appendChild(thumbImg);
                     thumb.addEventListener('click', () => {
                         mainImg.src = `images/${imgSrc}`;
@@ -407,31 +382,37 @@ document.querySelectorAll('.product-card').forEach(card => {
                     fidgetViewer.start();
                     fidgetViewer.onResize();
 
-                    // Color selector only for standard filaments
+                    // Color selector only for products that allow it (e.g. not lithophanes)
                     const colorSelection = document.getElementById('color-selection-container');
                     if (colorSelection) {
                         colorSelection.innerHTML = '';
-                        colorSelection.style.display = 'flex';
-                        colorSelection.style.flexWrap = 'wrap';
-                        colorSelection.style.gap = '10px';
-                        colorSelection.style.justifyContent = 'center';
-                        colorSelection.style.marginTop = '15px';
-                        filaments.filter(f => f.type === 'standard').forEach(f => {
-                            const swatch = document.createElement('div');
-                            swatch.style.width = '30px';
-                            swatch.style.height = '30px';
-                            swatch.style.borderRadius = '50%';
-                            swatch.style.border = '2px solid #ddd';
-                            swatch.style.cursor = 'pointer';
-                            swatch.style.backgroundColor = f.color;
-                            swatch.title = f.name;
-                            swatch.addEventListener('click', () => {
-                                Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
-                                swatch.style.borderColor = '#6366f1';
-                                if (fidgetViewer) fidgetViewer.setMaterial({ color: f.color, type: f.type });
+                        if (product.noColors) {
+                            colorSelection.style.display = 'none';
+                            // Lithophanes are always white
+                            if (fidgetViewer) fidgetViewer.setMaterial({ color: '#ffffff', type: 'matte' });
+                        } else {
+                            colorSelection.style.display = 'flex';
+                            colorSelection.style.flexWrap = 'wrap';
+                            colorSelection.style.gap = '10px';
+                            colorSelection.style.justifyContent = 'center';
+                            colorSelection.style.marginTop = '15px';
+                            filaments.filter(f => f.type === 'standard').forEach(f => {
+                                const swatch = document.createElement('div');
+                                swatch.style.width = '30px';
+                                swatch.style.height = '30px';
+                                swatch.style.borderRadius = '50%';
+                                swatch.style.border = '2px solid #ddd';
+                                swatch.style.cursor = 'pointer';
+                                swatch.style.backgroundColor = f.color;
+                                swatch.title = f.name;
+                                swatch.addEventListener('click', () => {
+                                    Array.from(colorSelection.children).forEach(c => c.style.borderColor = '#ddd');
+                                    swatch.style.borderColor = '#6366f1';
+                                    if (fidgetViewer) fidgetViewer.setMaterial({ color: f.color, type: f.type });
+                                });
+                                colorSelection.appendChild(swatch);
                             });
-                            colorSelection.appendChild(swatch);
-                        });
+                        }
                     }
                 };
                 // Photo button handler (if images exist)
