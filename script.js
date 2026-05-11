@@ -92,11 +92,7 @@ const filaments = [
     { name: 'Sárga', color: '#eab308', type: 'standard' },
     { name: 'Kék', color: '#3b82f6', type: 'standard' },
     { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
-    { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
-    { name: 'Moon Palace (Rainbow Silk)', color: '#d0a6b0', type: 'silk', rainbow: 'linear-gradient(45deg, #a855f7, #fbbf24, #22d3ee)' },
-    { name: 'Matte Rainbow', color: '#f87171', type: 'matte', rainbow: 'linear-gradient(45deg, #f87171, #fb923c, #fbbf24, #4ade80)' },
-    { name: 'Blue-Green Dual', color: '#0ea5e9', type: 'silk', rainbow: 'linear-gradient(45deg, #3b82f6, #10b981)' },
-    { name: 'Blue-Pink Dual', color: '#8b5cf6', type: 'silk', rainbow: 'linear-gradient(45deg, #3b82f6, #ec4899)' }
+    { name: 'Ezüst', color: '#94a3b8', type: 'silk' }
 ];
 
 // Render Colors in the new section
