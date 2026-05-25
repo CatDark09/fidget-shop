@@ -70,7 +70,7 @@ const filaments = [
     { name: 'Kék', color: '#3b82f6', type: 'standard' },
     { name: 'Kobaltkék', color: '#1e3a8a', type: 'standard' },
     { name: 'Ezüst', color: '#94a3b8', type: 'silk' },
-    { name: 'Arany-Zöld Duál', color: '#ffd700', rainbow: 'linear-gradient(135deg, #ffd700 0%, #22c55e 100%)', type: 'silk' },
+    { name: 'Arany-Zöld Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #ffd700 0%, #22c55e 50%, #000000 100%)', type: 'silk' },
     { name: 'Világoskék', color: '#add8e6', type: 'standard' },
     { name: 'Fekete-Rózsaszín Duál', color: '#000000', rainbow: 'linear-gradient(135deg, #000000 0%, #ff69b4 100%)', type: 'silk' },
     { name: 'Rózsaszín-Zöld Duál', color: '#ff69b4', rainbow: 'linear-gradient(135deg, #ff69b4 0%, #22c55e 100%)', type: 'silk' },
