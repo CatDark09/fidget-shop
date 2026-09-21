@@ -249,6 +249,12 @@ const productData = {
         modelFile: 'Honeycomb_Fidget.stl',
         description: ''
     },
+    'twin-roll': {
+        title: 'Twin Roll',
+        images: ['twin_roll_1.png', 'twin_roll_2.jpg'],
+        modelFile: '',
+        description: ''
+    },
     // Litofánok – csak 3D modell, nincs kép, nincs színválasztó (csak fehér)
     'litho-plane': {
         title: 'Litofán Sík',
