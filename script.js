@@ -255,8 +255,8 @@ const productData = {
         description: ''
     },
     'dino': {
-        title: 'Dinó',
-        images: ['dino.png'],
+        title: 'Dinó (Építőjáték)',
+        images: ['dino.png', 'dino2.png'],
         modelFile: '',
         description: '<strong>Ár:</strong> 250 Ft / db<br><strong>Csomag:</strong> 10 db esetén 2000 Ft'
     },
